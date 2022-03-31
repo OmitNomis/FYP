@@ -18,6 +18,7 @@ import ContactUs from "../screens/ContactUs";
 import SoldItems from "../screens/SoldItems";
 import MyListings from "../screens/MyListings";
 import Bookmarks from "../screens/Bookmarks";
+import AddBook from "../screens/AddBook";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -72,7 +73,7 @@ function HomeStack(props) {
     </Tab.Navigator>
   );
 }
-function SettingsStack(props) {
+function ScreenStack(props) {
   return (
     <Stack.Navigator initialRouteName="Settings">
       <Stack.Screen name="Settings" component={Settings} options={noHeader} />
@@ -129,9 +130,10 @@ function SignInStack(props) {
       <Stack.Screen name="HomeStack" component={HomeStack} options={noHeader} />
       <Stack.Screen
         name="Settings"
-        component={SettingsStack}
+        component={ScreenStack}
         options={noHeader}
       />
+      <Stack.Screen name="AddPost" component={AddBook} options={headerShown} />
     </Stack.Navigator>
   );
 }

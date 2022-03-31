@@ -59,7 +59,7 @@ const Login = (props) => {
     if (response != undefined) {
       if (response.data.success == 1) {
         var userInfo = {
-          UserId: response.data.userData.userId,
+          UserId: response.data.userData.userID,
           Phone: response.data.userData.phone,
           City: response.data.userData.city,
           CountryId: response.data.userData.countryId,
@@ -84,7 +84,7 @@ const Login = (props) => {
     <View style={{ flex: 1 }}>
       <ScrollView
         nestedScrollEnabled
-        contentContainerStyle={{ paddingBottom: 30 }}
+        // contentContainerStyle={{ paddingBottom: 30 }}
       >
         <View style={styles.container}>
           <View style={styles.head}>
@@ -157,9 +157,10 @@ const Login = (props) => {
               <CustomButton
                 title="Login"
                 onPress={() => {
-                  if (validateForm()) {
-                    SignIn();
-                  }
+                  props.navigation.replace("HomeStack");
+                  // if (validateForm()) {
+                  //   SignIn();
+                  // }
                 }}
               />
             </KeyboardAvoidingView>
@@ -195,6 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingHorizontal: 30,
     minHeight: Dimensions.get("screen").height,
+    paddingBottom: 20,
   },
   head: {
     flex: 0.5,

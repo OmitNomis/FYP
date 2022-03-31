@@ -37,8 +37,3 @@ export default {
   GetAllPosts,
   GetGenres,
 };
-
-export const endPoints = {
-  GetTemporaryToken: BaseUrl + "connect/token", //TO GENERATE TOKEN
-  RefreshToken: BaseUrl + "api/v1/user/refresh/token",
-};

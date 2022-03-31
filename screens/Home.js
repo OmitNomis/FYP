@@ -13,6 +13,7 @@ import ItemSmall from "../components/ItemSmall";
 import Genre from "../components/Genre";
 import RetriveData from "../service/RetriveData";
 import ToastMessage from "../components/Toast";
+import { NavigationContainer } from "@react-navigation/native";
 // import themeContext from "../assets/theme/colorsContext";
 
 const Home = (props) => {
@@ -41,11 +42,7 @@ const Home = (props) => {
   const getGenres = async () => {
     var response = await RetriveData.GetGenre();
     if (response != undefined) {
-      if (response.success == 1) {
-        setGenreList(response.data);
-      } else {
-        ToastMessage.Short("Error Loading Genre List");
-      }
+      setGenreList(response);
     } else {
       ToastMessage.Short("Error Loading Genre List ");
     }
@@ -184,7 +181,6 @@ const Home = (props) => {
             overScrollMode="never"
           >
             {postList.map((item) => {
-              console.log(item);
               return <ItemSmall item={item} />;
             })}
           </ScrollView>
@@ -192,6 +188,9 @@ const Home = (props) => {
       </ScrollView>
       <TouchableOpacity
         style={[styles.addBall, { backgroundColor: colors.Primary }]}
+        onPress={() => {
+          props.navigation.push("AddPost");
+        }}
       >
         <Icon name="add-outline" size={35} style={{ color: colors.White }} />
       </TouchableOpacity>

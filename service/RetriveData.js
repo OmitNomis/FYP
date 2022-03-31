@@ -11,7 +11,7 @@ const RetriveData = {
         console.log(error);
         ToastMessage.Short("Error loading Genre");
       });
-    return response.data;
+    return response.data.data;
   },
   GetPosts: async function GetPosts() {
     var response = await (await request())
