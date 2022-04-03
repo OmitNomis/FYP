@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import colors from "../assets/theme/colors";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -34,9 +35,18 @@ const Home = (props) => {
 
   const [genreList, setGenreList] = useState([]);
   const [postList, setPostList] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(() => {
     getGenres();
     getPosts();
+  }, []);
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getPosts();
+    wait(2000).then(() => setRefreshing(false));
   }, []);
 
   const getGenres = async () => {
@@ -47,6 +57,7 @@ const Home = (props) => {
       ToastMessage.Short("Error Loading Genre List ");
     }
   };
+
   const getPosts = async () => {
     var response = await RetriveData.GetPosts();
     if (response != undefined) {
@@ -63,6 +74,9 @@ const Home = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         nestedScrollEnabled
         style={[styles.container, { backgroundColor: colors.Background }]}
       >
@@ -181,7 +195,7 @@ const Home = (props) => {
             overScrollMode="never"
           >
             {postList.map((item) => {
-              return <ItemSmall item={item} />;
+              return <ItemSmall item={item} navigation={props.navigation} />;
             })}
           </ScrollView>
         </View>

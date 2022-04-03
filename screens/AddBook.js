@@ -119,8 +119,6 @@ const AddBook = (props) => {
     var genreId = [];
     genreId = selectedGenre.map((item) => item.id);
 
-    console.log(genreId);
-
     var tradeId;
     if (trade == true) {
       tradeId = 1;

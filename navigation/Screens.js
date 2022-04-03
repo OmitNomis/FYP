@@ -19,6 +19,7 @@ import SoldItems from "../screens/SoldItems";
 import MyListings from "../screens/MyListings";
 import Bookmarks from "../screens/Bookmarks";
 import AddBook from "../screens/AddBook";
+import Book from "../screens/Book";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -134,6 +135,7 @@ function SignInStack(props) {
         options={noHeader}
       />
       <Stack.Screen name="AddPost" component={AddBook} options={headerShown} />
+      <Stack.Screen name="Book" component={Book} options={headerShown} />
     </Stack.Navigator>
   );
 }

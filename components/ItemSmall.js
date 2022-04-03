@@ -3,8 +3,16 @@ import React from "react";
 import colors from "../assets/theme/colors";
 
 const ItemSmall = (props) => {
+  const bookDetails = props.item;
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() =>
+        props.navigation.navigate("Book", {
+          params: { name: "BookDetails", bookDetails },
+        })
+      }
+    >
       <View style={styles.imageContainer}>
         {/* <Image style={styles.image} /> */}
       </View>
