@@ -1,4 +1,12 @@
-import { StyleSheet, Text, View, ScrollView, Switch } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Switch,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import colors from "../assets/theme/colors";
 import { Dropdown } from "react-native-element-dropdown";
@@ -12,6 +20,7 @@ import request from "../config/RequestManager";
 import Uuid from "react-native-uuid";
 import SelectBox from "react-native-multi-selectbox";
 import { xorBy } from "lodash";
+import * as ImagePicker from "expo-image-picker";
 
 const priceType = [
   { label: "Negotiable", value: "1" },
@@ -80,13 +89,24 @@ const AddBook = (props) => {
   const [trade, setTrade] = useState(false);
   const [price, setPrice] = useState("");
   const [tradeWith, setTradeWith] = useState("");
-
+  const [image, setImage] = useState();
   const [errorMessage, setErrorMessage] = useState(false);
 
   const selectGenreHandler = () => {
     return (item) => {
       setSelectedGenre(xorBy(selectedGenre, [item], "id"));
     };
+  };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setImage(result);
+    }
   };
   const validateForm = () => {
     let isValid = true;
@@ -115,7 +135,35 @@ const AddBook = (props) => {
     }
     return isValid;
   };
-  const post = async () => {
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append("image", {
+      name: image.fileName || image.uri.substr(image.uri.lastIndexOf("/") + 1),
+      uri: image.uri,
+      type: "image/jpg",
+    });
+
+    const config = {
+      body: formData,
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    var link = api.BaseUrl + "api/upload";
+
+    fetch(link, config)
+      .then((res) => res.json())
+      .then((data) => {
+        post(data.data);
+      })
+      .catch((err) => {
+        console.log("err" + err);
+      });
+  };
+
+  const post = async (imagePath) => {
     var genreId = [];
     genreId = selectedGenre.map((item) => item.id);
 
@@ -139,8 +187,8 @@ const AddBook = (props) => {
       GenreId: genreId,
       Sold: 0,
       UserId: userInfo.UserId,
-      Image: "hehe",
-      PostDate: "2020/12/12",
+      Image: imagePath,
+      PostDate: new Date(),
     };
     var response = await (await request())
       .post(api.AddPost, data)
@@ -162,7 +210,26 @@ const AddBook = (props) => {
     <View style={{ flex: 1, backgroundColor: colors.Background }}>
       <ScrollView nestedScrollEnabled style={styles.container}>
         <View style={styles.addImageSection}>
-          <View style={styles.addImage}></View>
+          <View style={styles.addImage}>
+            <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
+              {!image ? (
+                <Text
+                  style={{
+                    fontFamily: "Regular",
+                    fontSize: 16,
+                    color: colors.Gray,
+                  }}
+                >
+                  Upload Image
+                </Text>
+              ) : (
+                <Image
+                  style={{ height: "100%", width: "100%", borderRadius: 100 }}
+                  source={{ uri: image.uri }}
+                />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
         <View style={styles.form}>
           <TextBoxOutline
@@ -182,6 +249,7 @@ const AddBook = (props) => {
             onMultiSelect={selectGenreHandler()}
             onTapClose={selectGenreHandler()}
             inputPlaceholder={"Select Genre"}
+            keyboardShouldPersistTaps="always"
             isMulti
             containerStyle={{
               backgroundColor: "#F0F0F0",
@@ -317,7 +385,7 @@ const AddBook = (props) => {
             onPress={() => {
               if (validateForm()) {
                 setErrorMessage(false);
-                post();
+                uploadImage();
               } else {
                 setErrorMessage(true);
               }
@@ -334,13 +402,24 @@ export default AddBook;
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 30,
-    marginTop: 20,
+    paddingTop: 20,
     backgroundColor: colors.Background,
   },
   text: {
     textAlign: "justify",
     fontFamily: "Regular",
     fontSize: 16,
+  },
+  imageUpload: {
+    height: 150,
+    width: 150,
+    borderRadius: 100,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: colors.Gray,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
   dropdown: {
     height: 50,

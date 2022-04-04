@@ -1,4 +1,4 @@
-const BaseUrl = "http://192.168.1.65:3000/";
+const BaseUrl = "http://100.64.225.169:3000/";
 const Login = BaseUrl + "api/login";
 
 const Register = BaseUrl + "api/register";
@@ -19,6 +19,7 @@ const GetSoldPosts = BaseUrl + "api/book/getSoldPosts";
 const GetAllPosts = BaseUrl + "api/book/getPosts";
 const GetGenres = BaseUrl + "api/book/getGenres";
 const GetPostGenre = BaseUrl + "api/book/getPostGenre";
+const GetPostsByUser = BaseUrl + "api/book/getPostsByUser";
 
 export default {
   Login,
@@ -38,4 +39,6 @@ export default {
   GetAllPosts,
   GetGenres,
   GetPostGenre,
+  BaseUrl,
+  GetPostsByUser,
 };

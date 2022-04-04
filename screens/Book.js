@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Alert,
+  Image,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import RetriveData from "../service/RetriveData";
@@ -135,7 +136,6 @@ const Book = (props) => {
       PostId: bookDetails.postID,
       UserId: bookDetails.userID,
     };
-    console.log(data);
     var response;
     if (bookmark == true) {
       response = await (await request())
@@ -167,16 +167,22 @@ const Book = (props) => {
   return (
     loading == false && (
       <View style={{ flex: 1 }}>
-        {console.log(bookmark)}
         <ScrollView
           nestedScrollEnabled
           contentContainerStyle={styles.container}
         >
-          <View style={styles.imageContainer}></View>
+          {console.log(api.BaseUrl + bookDetails.image)}
+          <View style={styles.imageContainer}>
+            <Image
+              style={{ height: "100%", width: "100%", borderRadius: 10 }}
+              source={{ uri: api.BaseUrl + bookDetails.image }}
+            />
+          </View>
           <View style={styles.headerContainer}>
             <Text style={styles.title}>{bookDetails.title}</Text>
             <Text style={styles.price}>Rs. {bookDetails.price}</Text>
           </View>
+          {console.log(bookDetails)}
           <View style={styles.genreList}>
             {postGenre.map((item) => {
               return (
