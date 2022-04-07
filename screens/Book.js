@@ -34,7 +34,7 @@ const Book = (props) => {
   const getUserById = async () => {
     var response = await RetriveData.GetUserById(bookDetails.userID);
     if (response != undefined) {
-      setUserInfo(response);
+      setUserInfo(response[0]);
       getGenreList();
     } else {
       ToastMessage.Short("Error Loading Customer ");
@@ -130,6 +130,27 @@ const Book = (props) => {
       ToastMessage.Short("Error Occured");
     }
   };
+  const deletePost = async () => {
+    var data = {
+      PostId: bookDetails.postID,
+    };
+    var response = await (await request())
+      .post(api.DeletePost, data)
+      .catch(function (error) {
+        console.log(error);
+        ToastMessage.Short("Error Occured, Try Again");
+      });
+    if (response != undefined) {
+      if (response.data.success == 1) {
+        ToastMessage.Short("Successfully deleted");
+        props.navigation.replace("HomeStack");
+      } else {
+        ToastMessage.Short(response.data.Message);
+      }
+    } else {
+      ToastMessage.Short("Error Occured");
+    }
+  };
 
   const bookmarkHandler = async () => {
     var data = {
@@ -171,7 +192,6 @@ const Book = (props) => {
           nestedScrollEnabled
           contentContainerStyle={styles.container}
         >
-          {console.log(api.BaseUrl + bookDetails.image)}
           <View style={styles.imageContainer}>
             <Image
               style={{ height: "100%", width: "100%", borderRadius: 10 }}
@@ -182,7 +202,6 @@ const Book = (props) => {
             <Text style={styles.title}>{bookDetails.title}</Text>
             <Text style={styles.price}>Rs. {bookDetails.price}</Text>
           </View>
-          {console.log(bookDetails)}
           <View style={styles.genreList}>
             {postGenre.map((item) => {
               return (
@@ -254,7 +273,7 @@ const Book = (props) => {
             )}
           </View>
         </ScrollView>
-        {myListing == true ? (
+        {myListing == false ? (
           <View style={styles.footer}>
             {bookmark == true ? (
               <TouchableOpacity
@@ -280,8 +299,23 @@ const Book = (props) => {
           </View>
         ) : (
           <View style={styles.footer}>
-            <TouchableOpacity style={styles.footerButton}>
-              <Text style={styles.footerText}>Edit Post</Text>
+            <TouchableOpacity
+              style={styles.footerButton}
+              onPress={() => {
+                Alert.alert(
+                  "Are You Sure?",
+                  "Do you want to delete this post? This action is not reversible.",
+                  [
+                    {
+                      text: "Go Back",
+                      style: "cancel",
+                    },
+                    { text: "Delete", onPress: () => deletePost() },
+                  ]
+                );
+              }}
+            >
+              <Text style={styles.footerText}>Delete Post</Text>
             </TouchableOpacity>
             {sold == false ? (
               <TouchableOpacity

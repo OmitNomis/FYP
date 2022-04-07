@@ -1,4 +1,4 @@
-const BaseUrl = "http://172.16.4.225:3000/";
+const BaseUrl = "http://192.168.1.65:3000/";
 const Login = BaseUrl + "api/login";
 
 const Register = BaseUrl + "api/register";
@@ -9,7 +9,7 @@ const UpdateUser = BaseUrl + "api/users/updateuser";
 const DeleteUser = BaseUrl + "api/users/deleteuser";
 
 const AddPost = BaseUrl + "api/book/add";
-const DeletePost = BaseUrl + "api/book/delete";
+const DeletePost = BaseUrl + "api/book/deletePost";
 const SoldPost = BaseUrl + "api/book/sold";
 const BookmarkPost = BaseUrl + "api/book/bookmarkPost";
 const DeleteBookmark = BaseUrl + "api/book/deleteBookmark";

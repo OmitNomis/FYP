@@ -36,9 +36,11 @@ const Home = (props) => {
   const [genreList, setGenreList] = useState([]);
   const [postList, setPostList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [myDetails, setMyDetails] = useState([]);
   useEffect(() => {
     getGenres();
     getPosts();
+    getMyDetails();
   }, []);
   const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
@@ -48,6 +50,15 @@ const Home = (props) => {
     getPosts();
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  const getMyDetails = async () => {
+    var response = await RetriveData.GetCustomerInfo();
+    if (response != undefined) {
+      setMyDetails(response);
+    } else {
+      ToastMessage.Short("Error Loading details");
+    }
+  };
 
   const getGenres = async () => {
     var response = await RetriveData.GetGenre();
@@ -128,7 +139,7 @@ const Home = (props) => {
               color: colors.Text,
             }}
           >
-            Hi there, Simon
+            Hi there, {myDetails.FirstName}
           </Text>
           <Text style={styles.text}>What do you want to buy today?</Text>
         </View>

@@ -14,7 +14,7 @@ const ItemWide = (props) => {
   const getUserById = async () => {
     var response = await RetriveData.GetUserById(props.data.userID);
     if (response != undefined) {
-      setUserInfo(response);
+      setUserInfo(response[0]);
       setLoading(false);
     } else {
       ToastMessage.Short("Error Loading User Info ");
