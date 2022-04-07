@@ -21,6 +21,7 @@ import Bookmarks from "../screens/Bookmarks";
 import AddBook from "../screens/AddBook";
 import Book from "../screens/Book";
 import EditBook from "../screens/EditBook";
+import EditProfile from "../screens/EditProfile";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -108,6 +109,11 @@ function ScreenStack(props) {
       <Stack.Screen
         name="Bookmarks"
         component={Bookmarks}
+        options={headerShown}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
         options={headerShown}
       />
     </Stack.Navigator>

@@ -69,9 +69,14 @@ const Settings = (props) => {
           </View>
           <Text style={styles.location}>{myDetails.City}</Text>
         </View>
-        <View style={styles.redBtn}>
+        <TouchableOpacity
+          style={styles.redBtn}
+          onPress={() => {
+            props.navigation.push("EditProfile");
+          }}
+        >
           <Text style={styles.redBtnText}>Edit profile</Text>
-        </View>
+        </TouchableOpacity>
 
         <ScrollView
           style={{ marginTop: 30 }}

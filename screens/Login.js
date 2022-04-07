@@ -67,6 +67,7 @@ const Login = (props) => {
           FirstName: response.data.userData.firstName,
           LastName: response.data.userData.lastName,
           StartDate: response.data.userData.startDate,
+          ProfileImage: response.data.userData.profileImage,
         };
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
         await DeviceStorage.saveKey("token", response.data.token);
