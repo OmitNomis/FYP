@@ -192,7 +192,7 @@ const Home = (props) => {
             justifyContent: "space-evenly",
           }}
         >
-          {genreList.map((item) => {
+          {genreList.slice(0, 10).map((item) => {
             return <Genre item={item} />;
           })}
         </ScrollView>
@@ -212,7 +212,7 @@ const Home = (props) => {
             showsHorizontalScrollIndicator={false}
             overScrollMode="never"
           >
-            {postList.map((item) => {
+            {postList.slice(0, 10).map((item) => {
               return <ItemSmall item={item} navigation={props.navigation} />;
             })}
           </ScrollView>

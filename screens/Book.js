@@ -155,7 +155,7 @@ const Book = (props) => {
   const bookmarkHandler = async () => {
     var data = {
       PostId: bookDetails.postID,
-      UserId: bookDetails.userID,
+      UserId: myDetails.UserId,
     };
     var response;
     if (bookmark == true) {
@@ -192,7 +192,6 @@ const Book = (props) => {
           nestedScrollEnabled
           contentContainerStyle={styles.container}
         >
-          {console.log(userInfo)}
           <View style={styles.imageContainer}>
             <Image
               style={{ height: "100%", width: "100%", borderRadius: 10 }}
