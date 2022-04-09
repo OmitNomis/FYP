@@ -7,6 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Switch,
+  Image,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SettingsBtn from "../components/SettingsButtons";
@@ -14,6 +15,7 @@ import { EventRegister } from "react-native-event-listeners";
 import colors from "../assets/theme/colors";
 import DeviceStorage from "../config/DeviceStorage";
 import RetriveData from "../service/RetriveData";
+import Api from "../constants/Api";
 
 const Settings = (props) => {
   //   const colors = useContext(themeContext);
@@ -59,7 +61,12 @@ const Settings = (props) => {
               borderRadius: 65,
               backgroundColor: colors.Primary,
             }}
-          ></View>
+          >
+            <Image
+              style={{ height: "100%", width: "100%", borderRadius: 65 }}
+              source={{ uri: Api.BaseUrl + myDetails.ProfileImage }}
+            />
+          </View>
         </View>
         <View style={styles.heading}>
           <View>

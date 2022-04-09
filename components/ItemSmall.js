@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import colors from "../assets/theme/colors";
+import Api from "../constants/Api";
 
 const ItemSmall = (props) => {
   const bookDetails = props.item;
@@ -14,7 +15,10 @@ const ItemSmall = (props) => {
       }
     >
       <View style={styles.imageContainer}>
-        {/* <Image style={styles.image} /> */}
+        <Image
+          style={styles.image}
+          source={{ uri: Api.BaseUrl + "/" + bookDetails.image }}
+        />
       </View>
       <View style={styles.details}>
         <View style={styles.titleContainer}>

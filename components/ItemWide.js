@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useState, useEffect } from "react";
 import colors from "../assets/theme/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RetriveData from "../service/RetriveData";
+import Api from "../constants/Api";
 
 const ItemWide = (props) => {
   const bookDetails = props.data;
@@ -35,7 +36,16 @@ const ItemWide = (props) => {
           <Text style={styles.date}>{bookDetails.postDate.split("T")[0]}</Text>
         </View>
         <View style={styles.bottom}>
-          <View style={styles.imageHolder}></View>
+          <View style={styles.imageHolder}>
+            <Image
+              style={{
+                height: "100%",
+                width: "100%",
+                borderRadius: 10,
+              }}
+              source={{ uri: Api.BaseUrl + "/" + bookDetails.image }}
+            />
+          </View>
           <View style={styles.itemDetails}>
             <View style={styles.heading}>
               <Ionicons

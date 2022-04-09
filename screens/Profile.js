@@ -6,6 +6,7 @@ import {
   ScrollView,
   StatusBar,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 // import themeContext from "../assets/theme/colorsContext";
@@ -14,6 +15,7 @@ import RetriveData from "../service/RetriveData";
 import ItemWide from "../components/ItemWide";
 import ToastMessage from "../components/Toast";
 import { Dimensions } from "react-native-web";
+import Api from "../constants/Api";
 const Profile = (props) => {
   // const colors = useContext(themeContext);
   const [myListings, setMyListings] = useState([]);
@@ -59,7 +61,11 @@ const Profile = (props) => {
       return days + " days";
     } else {
       var month = days / 30;
-      return Math.floor(month) + " Months";
+      if (month < 2) {
+        return Math.floor(month) + " Month";
+      } else {
+        return Math.floor(month) + " Months";
+      }
     }
   };
 
@@ -104,8 +110,14 @@ const Profile = (props) => {
                 width: 130,
                 borderRadius: 65,
                 backgroundColor: colors.Primary,
+                marginBottom: 20,
               }}
-            ></View>
+            >
+              <Image
+                style={{ height: "100%", width: "100%", borderRadius: 65 }}
+                source={{ uri: Api.BaseUrl + myDetails.ProfileImage }}
+              />
+            </View>
           </View>
           <View style={styles.heading}>
             <View>

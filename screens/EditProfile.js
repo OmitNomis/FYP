@@ -19,7 +19,7 @@ import request from "../config/RequestManager";
 import NoIconText from "../components/NoIconText";
 import * as ImagePicker from "expo-image-picker";
 
-const EditProfile = () => {
+const EditProfile = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [city, setCity] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -33,6 +33,7 @@ const EditProfile = () => {
   const [cityError, setCityError] = useState("");
   const [image, setImage] = useState("");
   const [myInfo, setMyInfo] = useState();
+  const [imageUpdated, setImageUpdated] = useState(false);
 
   useEffect(async () => {
     getUserInfo();
@@ -126,7 +127,7 @@ const EditProfile = () => {
       fetch(link, config)
         .then((res) => res.json())
         .then((data) => {
-          post(data.data);
+          post(data.data.split("\\")[1]);
         })
         .catch((err) => {
           console.log("err" + err);
@@ -167,6 +168,7 @@ const EditProfile = () => {
           ProfileImage: imagePath ? imagePath : null,
         };
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
+        props.navigation.replace("HomeStack");
       }
     } else {
       ToastMessage.Short("Error Occured While Making Post");
@@ -183,6 +185,7 @@ const EditProfile = () => {
     });
 
     if (!result.cancelled) {
+      setImageUpdated(true);
       setImage(result);
     }
   };
@@ -194,6 +197,7 @@ const EditProfile = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 30, flexGrow: 1 }}
       >
+        {console.log(myInfo)}
         {isLoading == false && (
           <>
             <KeyboardAvoidingView behavior="padding">
@@ -219,7 +223,12 @@ const EditProfile = () => {
                         width: "100%",
                         borderRadius: 100,
                       }}
-                      source={{ uri: image.uri }}
+                      source={{
+                        uri:
+                          imageUpdated == true
+                            ? image.uri
+                            : api.BaseUrl + myInfo.ProfileImage,
+                      }}
                     />
                   )}
                 </TouchableOpacity>

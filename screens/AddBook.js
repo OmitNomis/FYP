@@ -156,7 +156,7 @@ const AddBook = (props) => {
     fetch(link, config)
       .then((res) => res.json())
       .then((data) => {
-        post(data.data);
+        post(data.data.split("\\")[1]);
       })
       .catch((err) => {
         console.log("err" + err);

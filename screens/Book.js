@@ -192,6 +192,7 @@ const Book = (props) => {
           nestedScrollEnabled
           contentContainerStyle={styles.container}
         >
+          {console.log(userInfo)}
           <View style={styles.imageContainer}>
             <Image
               style={{ height: "100%", width: "100%", borderRadius: 10 }}
@@ -214,7 +215,10 @@ const Book = (props) => {
           <View style={styles.customerDetailsContainer}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <View style={styles.profilePicContainer}>
-                {/* profile pic */}
+                <Image
+                  style={{ height: "100%", width: "100%", borderRadius: 30 }}
+                  source={{ uri: api.BaseUrl + userInfo.profileImage }}
+                />
               </View>
               <View style={styles.BookcustomerDetails}>
                 <View>
@@ -383,7 +387,6 @@ const styles = StyleSheet.create({
   profilePicContainer: {
     height: 60,
     width: 60,
-    backgroundColor: "red",
     borderRadius: 30,
     marginLeft: 0,
     margin: 10,

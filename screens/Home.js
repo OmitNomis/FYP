@@ -7,6 +7,7 @@ import {
   ScrollView,
   StatusBar,
   RefreshControl,
+  Image,
 } from "react-native";
 import colors from "../assets/theme/colors";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -15,6 +16,7 @@ import Genre from "../components/Genre";
 import RetriveData from "../service/RetriveData";
 import ToastMessage from "../components/Toast";
 import { NavigationContainer } from "@react-navigation/native";
+import Api from "../constants/Api";
 // import themeContext from "../assets/theme/colorsContext";
 
 const Home = (props) => {
@@ -92,14 +94,19 @@ const Home = (props) => {
         style={[styles.container, { backgroundColor: colors.Background }]}
       >
         <View style={styles.topIcons}>
-          <View
+          <TouchableOpacity
             style={{
-              height: 50,
-              width: 50,
-              borderRadius: 25,
-              backgroundColor: colors.Primary,
+              height: 66,
+              width: 66,
+              borderRadius: 33,
             }}
-          ></View>
+            onPress={() => props.navigation.navigate("Profile")}
+          >
+            <Image
+              style={{ height: "100%", width: "100%", borderRadius: 33 }}
+              source={{ uri: Api.BaseUrl + myDetails.ProfileImage }}
+            />
+          </TouchableOpacity>
           <View
             style={{
               justifyContent: "center",
