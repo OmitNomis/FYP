@@ -110,6 +110,9 @@ const AddBook = (props) => {
   };
   const validateForm = () => {
     let isValid = true;
+    if (!image) {
+      isValid = false;
+    }
     if (title.trim() === "") {
       isValid = false;
     }
@@ -208,7 +211,11 @@ const AddBook = (props) => {
   };
   return (
     <View style={{ flex: 1, backgroundColor: colors.Background }}>
-      <ScrollView nestedScrollEnabled style={styles.container}>
+      <ScrollView
+        nestedScrollEnabled
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 30 }}
+      >
         <View style={styles.addImageSection}>
           <View style={styles.addImage}>
             <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
@@ -272,6 +279,7 @@ const AddBook = (props) => {
             <TextBoxOutline
               placeholder="Price"
               half
+              keyboardType={"numeric"}
               value={price}
               onChangeText={(text) => setPrice(text)}
             />

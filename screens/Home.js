@@ -121,6 +121,9 @@ const Home = (props) => {
             }}
           >
             <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("Settings", { screen: "Bookmarks" });
+              }}
               style={{
                 height: 55,
                 width: 55,

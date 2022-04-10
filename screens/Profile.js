@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 // import themeContext from "../assets/theme/colorsContext";
@@ -23,6 +24,7 @@ const Profile = (props) => {
   const [myDetails, setMyDetails] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sold, setSold] = useState();
+  const [refreshing, setRefreshing] = useState(false);
   const getMyDetails = async () => {
     var response = await RetriveData.GetCustomerInfo();
     if (response != undefined) {
@@ -69,6 +71,14 @@ const Profile = (props) => {
       }
     }
   };
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getMyDetails();
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     getMyDetails();
@@ -86,7 +96,13 @@ const Profile = (props) => {
   });
   return loading == false ? (
     <View style={{ flex: 1, backgroundColor: colors.Background }}>
-      <ScrollView nestedScrollEnabled style={styles.container}>
+      <ScrollView
+        nestedScrollEnabled
+        style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.topIcons}>
           <TouchableOpacity
             style={styles.circle}

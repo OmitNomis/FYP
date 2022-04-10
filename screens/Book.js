@@ -419,10 +419,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   genre: {
-    borderRadius: 9,
+    borderRadius: 20,
     height: 40,
-    borderWidth: 0.2,
-    borderColor: "#F0F0F0",
+    borderWidth: 1,
+    borderColor: colors.Gray,
     justifyContent: "center",
     paddingHorizontal: 15,
   },
