@@ -88,7 +88,7 @@ const SoldItems = (props) => {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text>No Bookmarks Found!</Text>
+          <Text>No Books Sold Yet!</Text>
         </View>
       ) : (
         <FlatList

@@ -173,11 +173,29 @@ const Profile = (props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.posts}>
-          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
-            {myListings.map((item) => {
-              return <ItemWide data={item} navigation={props.navigation} />;
-            })}
-          </ScrollView>
+          {myListings.length == 0 ? (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{ fontFamily: "Regular", fontSize: 16, marginTop: 50 }}
+              >
+                No Posts Made Yet
+              </Text>
+            </View>
+          ) : (
+            <ScrollView
+              nestedScrollEnabled
+              showsVerticalScrollIndicator={false}
+            >
+              {myListings.slice(0, 10).map((item) => {
+                return <ItemWide data={item} navigation={props.navigation} />;
+              })}
+            </ScrollView>
+          )}
         </View>
       </ScrollView>
     </View>

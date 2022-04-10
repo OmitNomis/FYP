@@ -9,12 +9,12 @@ import {
   StatusBar,
 } from "react-native";
 import colors from "../assets/theme/colors";
-// import qs from "qs";
 import CustomButton from "../components/CustomButton";
+import RetriveData from "../service/RetriveData";
 import TextBox from "../components/TextBox";
-// import request from "../config/RequestManager";
 import api from "../constants/Api";
 import ToastMessage from "../components/Toast";
+import request from "../config/RequestManager";
 const ChangePassword = (props) => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
@@ -22,18 +22,28 @@ const ChangePassword = (props) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [oldPasswordError, setOldPasswordError] = useState("");
+  const [myDetails, setMyDetails] = useState([]);
 
   useEffect(() => {
     props.navigation.setOptions({
       title: "Change Password",
     });
+    getMyDetails();
   }, []);
-
+  const getMyDetails = async () => {
+    var response = await RetriveData.GetCustomerInfo();
+    if (response != undefined) {
+      setMyDetails(response);
+    } else {
+      ToastMessage.Short("Error Loading details");
+    }
+  };
   const changePassword = async () => {
-    var data = qs.stringify({
+    var data = {
+      Email: myDetails.Email,
       OldPassword: oldPassword,
       NewPassword: password,
-    });
+    };
 
     var response = await (await request())
       .post(api.ChangePassword, data)
@@ -41,16 +51,13 @@ const ChangePassword = (props) => {
         ToastMessage.Short("Error Occured Contact Support");
       });
     if (response != undefined) {
-      if (response.data.Code == 200) {
-        ToastMessage.Short(response.data.Message);
+      if (response.data.success == 0) {
+        ToastMessage.Short(response.data.message);
       } else {
-        ToastMessage.Short(response.data.Message);
+        ToastMessage.Short("Password Successfully Changed");
+        props.navigation.replace("HomeStack");
       }
-    } else {
-      ToastMessage.Short("Error Occured");
-      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   const validateForm = () => {
@@ -58,28 +65,34 @@ const ChangePassword = (props) => {
     if (oldPassword.trim() === "") {
       isValid = false;
       setOldPasswordError("Old Password is required");
-    } else if (oldPassword.length < 6) {
-      isValid = false;
-      setOldPasswordError("Must be 6 characters long");
-    } else {
+    }
+    // else if (oldPassword.length < 6) {
+    //   isValid = false;
+    //   setOldPasswordError("Must be 6 characters long");
+    // }
+    else {
       setOldPasswordError("");
     }
     if (password.trim() === "") {
       isValid = false;
       setPasswordError("Username is required");
-    } else if (password.length < 6) {
-      isValid = false;
-      setPasswordError("Must be 6 characters long");
-    } else {
+    }
+    // else if (password.length < 6) {
+    //   isValid = false;
+    //   setPasswordError("Must be 6 characters long");
+    // }
+    else {
       setPasswordError("");
     }
     if (confirmPassword.trim() === "") {
       isValid = false;
       setConfirmPasswordError("Username is required");
-    } else if (confirmPassword.length < 6) {
-      isValid = false;
-      setConfirmPasswordError("Must be 6 characters long");
-    } else {
+    }
+    //  else if (confirmPassword.length < 6) {
+    //   isValid = false;
+    //   setConfirmPasswordError("Must be 6 characters long");
+    // }
+    else {
       setConfirmPasswordError("");
     }
     if (!(password === confirmPassword)) {
@@ -87,7 +100,6 @@ const ChangePassword = (props) => {
     } else {
       setConfirmPasswordError("");
     }
-
     return isValid;
   };
 
@@ -172,7 +184,7 @@ const ChangePassword = (props) => {
                 title="Change Password"
                 onPress={() => {
                   if (validateForm()) {
-                    // changePassword();
+                    changePassword();
                   }
                 }}
               />

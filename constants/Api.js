@@ -1,14 +1,15 @@
 const BaseUrl = "http://100.64.195.223:3000/";
-
+//login
 const Login = BaseUrl + "api/login";
-
+//register
 const Register = BaseUrl + "api/register";
-
+//users
 const GetAllUsers = BaseUrl + "api/users";
 const GetUserById = BaseUrl + "api/users";
 const UpdateUser = BaseUrl + "api/users/updateuser";
 const DeleteUser = BaseUrl + "api/users/deleteuser";
-
+const ChangePassword = BaseUrl + "api/users/changePassword";
+//book
 const AddPost = BaseUrl + "api/book/add";
 const DeletePost = BaseUrl + "api/book/deletePost";
 const SoldPost = BaseUrl + "api/book/sold";
@@ -41,5 +42,6 @@ export default {
   GetGenres,
   GetPostGenre,
   BaseUrl,
+  ChangePassword,
   GetPostsByUser,
 };

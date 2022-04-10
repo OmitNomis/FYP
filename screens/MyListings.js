@@ -88,7 +88,7 @@ const MyListings = (props) => {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text>No Bookmarks Found!</Text>
+          <Text>No Books Listed Yet!</Text>
         </View>
       ) : (
         <FlatList

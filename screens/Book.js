@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  Linking,
   ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
@@ -186,6 +187,19 @@ const Book = (props) => {
     }
   };
 
+  const dialCall = () => {
+    let phoneNumber = userInfo.phone;
+    let call = "";
+
+    if (Platform.OS === "android") {
+      call = "tel:${" + phoneNumber + "}";
+    } else {
+      call = "telprompt:${" + phoneNumber + "}";
+    }
+
+    Linking.openURL(call);
+  };
+
   return loading == false ? (
     <View style={{ flex: 1 }}>
       <ScrollView nestedScrollEnabled contentContainerStyle={styles.container}>
@@ -288,7 +302,7 @@ const Book = (props) => {
               <Text style={styles.footerText}>Add Bookmark</Text>
             </TouchableOpacity>
           )}
-          <TouchableOpacity style={styles.footerButton}>
+          <TouchableOpacity style={styles.footerButton} onPress={dialCall}>
             <Text style={styles.footerText}>Call</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.footerButton}>
