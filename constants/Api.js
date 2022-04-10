@@ -1,4 +1,5 @@
-const BaseUrl = "http://192.168.1.65:3000/";
+const BaseUrl = "http://100.64.195.223:3000/";
+
 const Login = BaseUrl + "api/login";
 
 const Register = BaseUrl + "api/register";

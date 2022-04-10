@@ -7,6 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 // import themeContext from "../assets/theme/colorsContext";
@@ -83,92 +84,94 @@ const Profile = (props) => {
     fontSize: 16,
     color: colors.Text,
   });
-  return (
-    loading == false && (
-      <View style={{ flex: 1, backgroundColor: colors.Background }}>
-        <ScrollView nestedScrollEnabled style={styles.container}>
-          <View style={styles.topIcons}>
-            <TouchableOpacity
-              style={styles.circle}
-              onPress={() => props.navigation.goBack()}
-            >
-              <Ionicons name="arrow-back" size={25} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.circle}
-              onPress={() => {
-                props.navigation.navigate("Settings");
-              }}
-            >
-              <Ionicons name="ios-settings-sharp" size={20} />
-            </TouchableOpacity>
+  return loading == false ? (
+    <View style={{ flex: 1, backgroundColor: colors.Background }}>
+      <ScrollView nestedScrollEnabled style={styles.container}>
+        <View style={styles.topIcons}>
+          <TouchableOpacity
+            style={styles.circle}
+            onPress={() => props.navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={25} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.circle}
+            onPress={() => {
+              props.navigation.navigate("Settings");
+            }}
+          >
+            <Ionicons name="ios-settings-sharp" size={20} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.pictureHolder}>
+          <View
+            style={{
+              height: 130,
+              width: 130,
+              borderRadius: 65,
+              backgroundColor: colors.Primary,
+              marginBottom: 20,
+            }}
+          >
+            <Image
+              style={{ height: "100%", width: "100%", borderRadius: 65 }}
+              source={{ uri: Api.BaseUrl + myDetails.ProfileImage }}
+            />
           </View>
-          <View style={styles.pictureHolder}>
-            <View
-              style={{
-                height: 130,
-                width: 130,
-                borderRadius: 65,
-                backgroundColor: colors.Primary,
-                marginBottom: 20,
-              }}
-            >
-              <Image
-                style={{ height: "100%", width: "100%", borderRadius: 65 }}
-                source={{ uri: Api.BaseUrl + myDetails.ProfileImage }}
-              />
-            </View>
-          </View>
-          <View style={styles.heading}>
-            <View>
-              <Text style={[styles.name, { color: colors.Text }]}>
-                {myDetails.FirstName} {myDetails.LastName}
-              </Text>
-            </View>
-            <Text style={[styles.location, { color: colors.LightText }]}>
-              {myDetails.City}
+        </View>
+        <View style={styles.heading}>
+          <View>
+            <Text style={[styles.name, { color: colors.Text }]}>
+              {myDetails.FirstName} {myDetails.LastName}
             </Text>
           </View>
+          <Text style={[styles.location, { color: colors.LightText }]}>
+            {myDetails.City}
+          </Text>
+        </View>
 
-          <View style={styles.info}>
-            <View style={styles.infoBox}>
-              <Text style={infoHeading}>Member for</Text>
-              <Text style={infoInfo}>{memberFor()}</Text>
-            </View>
-            <View style={styles.infoBox}>
-              <Text style={infoHeading}>Books Sold</Text>
-              <Text style={infoInfo}>{sold} Sold</Text>
-            </View>
-            <View style={styles.infoBox}>
-              <Text style={infoHeading}>Total Posts</Text>
-              <Text style={infoInfo}>{myListings.length} Posts</Text>
-            </View>
+        <View style={styles.info}>
+          <View style={styles.infoBox}>
+            <Text style={infoHeading}>Member for</Text>
+            <Text style={infoInfo}>{memberFor()}</Text>
           </View>
-          <View style={styles.subHeading}>
-            <View>
-              <Text style={styles.heading2}>Posts</Text>
-            </View>
-            <TouchableOpacity
-              style={[styles.redBtn, { backgroundColor: colors.Primary }]}
-            >
-              <Text style={[styles.redBtnText, { color: colors.White }]}>
-                See all posts
-              </Text>
-            </TouchableOpacity>
+          <View style={styles.infoBox}>
+            <Text style={infoHeading}>Books Sold</Text>
+            <Text style={infoInfo}>{sold} Sold</Text>
           </View>
-          <View style={styles.posts}>
-            <ScrollView
-              nestedScrollEnabled
-              showsVerticalScrollIndicator={false}
-            >
-              {myListings.map((item) => {
-                return <ItemWide data={item} navigation={props.navigation} />;
-              })}
-            </ScrollView>
+          <View style={styles.infoBox}>
+            <Text style={infoHeading}>Total Posts</Text>
+            <Text style={infoInfo}>{myListings.length} Posts</Text>
           </View>
-        </ScrollView>
-      </View>
-    )
+        </View>
+        <View style={styles.subHeading}>
+          <View>
+            <Text style={styles.heading2}>Posts</Text>
+          </View>
+          <TouchableOpacity
+            style={[styles.redBtn, { backgroundColor: colors.Primary }]}
+          >
+            <Text style={[styles.redBtnText, { color: colors.White }]}>
+              See all posts
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.posts}>
+          <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
+            {myListings.map((item) => {
+              return <ItemWide data={item} navigation={props.navigation} />;
+            })}
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
+  ) : (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator color={colors.Primary} size="large" />
+      <Text style={{ fontFamily: "Regular", fontSize: 16, marginTop: 20 }}>
+        Please Wait...
+      </Text>
+    </View>
   );
 };
 

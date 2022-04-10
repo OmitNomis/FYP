@@ -8,6 +8,7 @@ import {
   StatusBar,
   RefreshControl,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import colors from "../assets/theme/colors";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -15,7 +16,6 @@ import ItemSmall from "../components/ItemSmall";
 import Genre from "../components/Genre";
 import RetriveData from "../service/RetriveData";
 import ToastMessage from "../components/Toast";
-import { NavigationContainer } from "@react-navigation/native";
 import Api from "../constants/Api";
 // import themeContext from "../assets/theme/colorsContext";
 
@@ -39,9 +39,9 @@ const Home = (props) => {
   const [postList, setPostList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [myDetails, setMyDetails] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    getGenres();
-    getPosts();
     getMyDetails();
   }, []);
   const wait = (timeout) => {
@@ -49,16 +49,18 @@ const Home = (props) => {
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    getPosts();
-    wait(2000).then(() => setRefreshing(false));
+    getMyDetails();
+    wait(1000).then(() => setRefreshing(false));
   }, []);
 
   const getMyDetails = async () => {
     var response = await RetriveData.GetCustomerInfo();
     if (response != undefined) {
       setMyDetails(response);
+      getPosts();
     } else {
       ToastMessage.Short("Error Loading details");
+      getPosts();
     }
   };
 
@@ -66,8 +68,10 @@ const Home = (props) => {
     var response = await RetriveData.GetGenre();
     if (response != undefined) {
       setGenreList(response);
+      setLoading(false);
     } else {
       ToastMessage.Short("Error Loading Genre List ");
+      setLoading(false);
     }
   };
 
@@ -76,15 +80,18 @@ const Home = (props) => {
     if (response != undefined) {
       if (response.success == 1) {
         setPostList(response.data);
+        getGenres();
       } else {
         ToastMessage.Short("Error Loading Post List");
+        getGenres();
       }
     } else {
       ToastMessage.Short("Error Loading Post List ");
+      getGenres();
     }
   };
 
-  return (
+  return loading == false ? (
     <View style={{ flex: 1 }}>
       <ScrollView
         refreshControl={
@@ -226,6 +233,13 @@ const Home = (props) => {
       >
         <Icon name="add-outline" size={35} style={{ color: colors.White }} />
       </TouchableOpacity>
+    </View>
+  ) : (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator color={colors.Primary} size="large" />
+      <Text style={{ fontFamily: "Regular", fontSize: 16, marginTop: 20 }}>
+        Please Wait...
+      </Text>
     </View>
   );
 };

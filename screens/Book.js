@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import RetriveData from "../service/RetriveData";
@@ -185,169 +186,169 @@ const Book = (props) => {
     }
   };
 
-  return (
-    loading == false && (
-      <View style={{ flex: 1 }}>
-        <ScrollView
-          nestedScrollEnabled
-          contentContainerStyle={styles.container}
-        >
-          <View style={styles.imageContainer}>
-            <Image
-              style={{ height: "100%", width: "100%", borderRadius: 10 }}
-              source={{ uri: api.BaseUrl + bookDetails.image }}
-            />
-          </View>
-          <View style={styles.headerContainer}>
-            <Text style={styles.title}>{bookDetails.title}</Text>
-            <Text style={styles.price}>Rs. {bookDetails.price}</Text>
-          </View>
-          <View style={styles.genreList}>
-            {postGenre.map((item) => {
-              return (
-                <View style={styles.genre}>
-                  <Text>{item}</Text>
-                </View>
-              );
-            })}
-          </View>
-          <View style={styles.customerDetailsContainer}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View style={styles.profilePicContainer}>
-                <Image
-                  style={{ height: "100%", width: "100%", borderRadius: 30 }}
-                  source={{ uri: api.BaseUrl + userInfo.profileImage }}
-                />
+  return loading == false ? (
+    <View style={{ flex: 1 }}>
+      <ScrollView nestedScrollEnabled contentContainerStyle={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={{ height: "100%", width: "100%", borderRadius: 10 }}
+            source={{ uri: api.BaseUrl + bookDetails.image }}
+          />
+        </View>
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>{bookDetails.title}</Text>
+          <Text style={styles.price}>Rs. {bookDetails.price}</Text>
+        </View>
+        <View style={styles.genreList}>
+          {postGenre.map((item) => {
+            return (
+              <View style={styles.genre}>
+                <Text>{item}</Text>
               </View>
-              <View style={styles.BookcustomerDetails}>
-                <View>
-                  <Text style={styles.customerName}>
-                    {userInfo.firstName + " " + userInfo.lastName}
-                  </Text>
-                  <Text style={styles.customerPhone}>{userInfo.phone}</Text>
-                </View>
+            );
+          })}
+        </View>
+        <View style={styles.customerDetailsContainer}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={styles.profilePicContainer}>
+              <Image
+                style={{ height: "100%", width: "100%", borderRadius: 30 }}
+                source={{ uri: api.BaseUrl + userInfo.profileImage }}
+              />
+            </View>
+            <View style={styles.BookcustomerDetails}>
+              <View>
+                <Text style={styles.customerName}>
+                  {userInfo.firstName + " " + userInfo.lastName}
+                </Text>
+                <Text style={styles.customerPhone}>{userInfo.phone}</Text>
               </View>
             </View>
           </View>
-          <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
-            <Text
-              style={{ fontFamily: "Bold", color: colors.Black, fontSize: 16 }}
-            >
-              Book Details
+        </View>
+        <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
+          <Text
+            style={{ fontFamily: "Bold", color: colors.Black, fontSize: 16 }}
+          >
+            Book Details
+          </Text>
+        </View>
+        <View style={styles.bookDetails}>
+          <View style={styles.detail}>
+            <Text style={styles.detailText}>Author: {bookDetails.author}</Text>
+          </View>
+          <View style={styles.detail}>
+            <Text style={styles.detailText}>
+              Book Condition:{bookCondition()}
             </Text>
           </View>
-          <View style={styles.bookDetails}>
-            <View style={styles.detail}>
-              <Text style={styles.detailText}>
-                Author: {bookDetails.author}
-              </Text>
-            </View>
-            <View style={styles.detail}>
-              <Text style={styles.detailText}>
-                Book Condition:{bookCondition()}
-              </Text>
-            </View>
-            <View style={styles.detail}>
-              <Text style={styles.detailText}>
-                Delivery: {bookDetails.delivery == 1 ? "Yes" : "No"}
-              </Text>
-            </View>
-            <View style={styles.detail}>
-              <Text style={styles.detailText}>
-                Location: {bookDetails.location}
-              </Text>
-            </View>
-            <View style={styles.detail}>
-              <Text style={styles.detailText}>
-                Negotiable: {bookDetails.priceType == 1 ? "Yes" : "No"}
-              </Text>
-            </View>
-            <View style={styles.detail}>
-              <Text style={styles.detailText}>
-                Available for trade: {bookDetails.trade == 0 ? "No" : "Yes"}
-              </Text>
-            </View>
-            {bookDetails.trade == 1 && (
-              <View style={styles.detail}>
-                <Text style={styles.detailText}>
-                  Trade With: {bookDetails.tradeWith}
-                </Text>
-              </View>
-            )}
+          <View style={styles.detail}>
+            <Text style={styles.detailText}>
+              Delivery: {bookDetails.delivery == 1 ? "Yes" : "No"}
+            </Text>
           </View>
-        </ScrollView>
-        {myListing == false ? (
-          <View style={styles.footer}>
-            {bookmark == true ? (
-              <TouchableOpacity
-                style={styles.footerButton}
-                onPress={bookmarkHandler}
-              >
-                <Text style={styles.footerText}>Remove Bookmark</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={styles.footerButton}
-                onPress={bookmarkHandler}
-              >
-                <Text style={styles.footerText}>Add Bookmark</Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity style={styles.footerButton}>
-              <Text style={styles.footerText}>Call</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.footerButton}>
-              <Text style={styles.footerText}>Chat now</Text>
-            </TouchableOpacity>
+          <View style={styles.detail}>
+            <Text style={styles.detailText}>
+              Location: {bookDetails.location}
+            </Text>
           </View>
-        ) : (
-          <View style={styles.footer}>
+          <View style={styles.detail}>
+            <Text style={styles.detailText}>
+              Negotiable: {bookDetails.priceType == 1 ? "Yes" : "No"}
+            </Text>
+          </View>
+          <View style={styles.detail}>
+            <Text style={styles.detailText}>
+              Available for trade: {bookDetails.trade == 0 ? "No" : "Yes"}
+            </Text>
+          </View>
+          {bookDetails.trade == 1 && (
+            <View style={styles.detail}>
+              <Text style={styles.detailText}>
+                Trade With: {bookDetails.tradeWith}
+              </Text>
+            </View>
+          )}
+        </View>
+      </ScrollView>
+      {myListing == false ? (
+        <View style={styles.footer}>
+          {bookmark == true ? (
+            <TouchableOpacity
+              style={styles.footerButton}
+              onPress={bookmarkHandler}
+            >
+              <Text style={styles.footerText}>Remove Bookmark</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.footerButton}
+              onPress={bookmarkHandler}
+            >
+              <Text style={styles.footerText}>Add Bookmark</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={styles.footerButton}>
+            <Text style={styles.footerText}>Call</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerButton}>
+            <Text style={styles.footerText}>Chat now</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={styles.footerButton}
+            onPress={() => {
+              Alert.alert(
+                "Are You Sure?",
+                "Do you want to delete this post? This action is not reversible.",
+                [
+                  {
+                    text: "Go Back",
+                    style: "cancel",
+                  },
+                  { text: "Delete", onPress: () => deletePost() },
+                ]
+              );
+            }}
+          >
+            <Text style={styles.footerText}>Delete Post</Text>
+          </TouchableOpacity>
+          {sold == false ? (
             <TouchableOpacity
               style={styles.footerButton}
               onPress={() => {
                 Alert.alert(
                   "Are You Sure?",
-                  "Do you want to delete this post? This action is not reversible.",
+                  "Do you want to set this post as Sold? This action is not reversible.",
                   [
                     {
                       text: "Go Back",
                       style: "cancel",
                     },
-                    { text: "Delete", onPress: () => deletePost() },
+                    { text: "Mark as Sold", onPress: () => soldBook() },
                   ]
                 );
               }}
             >
-              <Text style={styles.footerText}>Delete Post</Text>
+              <Text style={styles.footerText}>Mark as Sold</Text>
             </TouchableOpacity>
-            {sold == false ? (
-              <TouchableOpacity
-                style={styles.footerButton}
-                onPress={() => {
-                  Alert.alert(
-                    "Are You Sure?",
-                    "Do you want to set this post as Sold? This action is not reversible.",
-                    [
-                      {
-                        text: "Go Back",
-                        style: "cancel",
-                      },
-                      { text: "Mark as Sold", onPress: () => soldBook() },
-                    ]
-                  );
-                }}
-              >
-                <Text style={styles.footerText}>Mark as Sold</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.footerButton} disabled>
-                <Text style={styles.footerText}>Book Sold</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-      </View>
-    )
+          ) : (
+            <TouchableOpacity style={styles.footerButton} disabled>
+              <Text style={styles.footerText}>Book Sold</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+    </View>
+  ) : (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <ActivityIndicator color={colors.Primary} size="large" />
+      <Text style={{ fontFamily: "Regular", fontSize: 16, marginTop: 20 }}>
+        Please Wait...
+      </Text>
+    </View>
   );
 };
 
