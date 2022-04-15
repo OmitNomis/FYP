@@ -22,10 +22,7 @@ const Register = (props) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 30 }}
-        nestedScrollEnabled
-      >
+      <ScrollView nestedScrollEnabled>
         <View style={styles.container}>
           <View style={styles.head}>
             <View style={styles.logoHolder}>

@@ -202,7 +202,7 @@ const Settings = (props) => {
             icon="log-out-outline"
             onPress={() => {
               DeviceStorage.clearToken();
-              props.navigation.replace("Login");
+              props.navigation.replace("SignInStack");
             }}
           />
         </View>

@@ -215,6 +215,8 @@ const AddBook = (props) => {
         nestedScrollEnabled
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 30 }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.addImageSection}>
           <View style={styles.addImage}>
@@ -256,7 +258,6 @@ const AddBook = (props) => {
             onMultiSelect={selectGenreHandler()}
             onTapClose={selectGenreHandler()}
             inputPlaceholder={"Select Genre"}
-            keyboardShouldPersistTaps="always"
             isMulti
             containerStyle={{
               backgroundColor: "#F0F0F0",

@@ -83,7 +83,6 @@ const MyListings = (props) => {
           />
         </View>
       </View>
-      {/* <ScrollView nestedScrollEnabled>chat components</ScrollView> */}
       {bookmark.length == 0 ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -92,6 +91,7 @@ const MyListings = (props) => {
         </View>
       ) : (
         <FlatList
+          showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }

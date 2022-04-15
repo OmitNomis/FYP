@@ -197,7 +197,6 @@ const EditProfile = (props) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingVertical: 30, flexGrow: 1 }}
       >
-        {console.log(myInfo)}
         {isLoading == false && (
           <>
             <KeyboardAvoidingView behavior="padding">

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -10,10 +10,11 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   StatusBar,
+  BackHandler,
+  Alert,
 } from "react-native";
 import TextBox from "../components/TextBox";
 import CustomButton from "../components/CustomButton";
-import qs from "qs";
 import request from "../config/RequestManager";
 import api from "../constants/Api";
 import DeviceStorage from "../config/DeviceStorage";
@@ -81,6 +82,29 @@ const Login = (props) => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        "Hold on!",
+        "Are you sure you want to quit the Application?",
+        [
+          {
+            text: "Go Back",
+            onPress: () => null,
+            style: "cancel",
+          },
+          { text: "YES", onPress: () => BackHandler.exitApp() },
+        ]
+      );
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>

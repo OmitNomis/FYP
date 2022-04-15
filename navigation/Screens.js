@@ -116,6 +116,11 @@ function ScreenStack(props) {
         component={EditProfile}
         options={headerShown}
       />
+      <Stack.Screen
+        name="SignInStack"
+        component={SignInStack}
+        options={noHeader}
+      />
     </Stack.Navigator>
   );
 }
