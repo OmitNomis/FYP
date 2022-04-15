@@ -13,31 +13,106 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import SettingsBtn from "../components/SettingsButtons";
 import { EventRegister } from "react-native-event-listeners";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
 import DeviceStorage from "../config/DeviceStorage";
 import RetriveData from "../service/RetriveData";
 import Api from "../constants/Api";
+import themeContext from "../assets/theme/colorsContext";
 
 const Settings = (props) => {
-  //   const colors = useContext(themeContext);
   const [darkMode, setDarkMode] = useState();
   const [myDetails, setMyDetails] = useState([]);
   const [loading, setLoading] = useState(true);
+  const colors = useContext(themeContext);
 
-  useEffect(() => {
+  useEffect(async () => {
     getMyDetails();
   }, []);
 
   const getMyDetails = async () => {
+    var theme = await DeviceStorage.getKey("DarkMode");
     var response = await RetriveData.GetCustomerInfo();
     if (response != undefined) {
       setMyDetails(response);
       setLoading(false);
+      setDarkMode(theme === "true" ? true : false);
     } else {
       ToastMessage.Short("Error Loading details");
       setLoading(false);
     }
   };
+  const themeHandler = (value) => {
+    setDarkMode(value);
+    DeviceStorage.saveKey("DarkMode", value.toString());
+    EventRegister.emit("darkTheme", value);
+  };
+  const styles = StyleSheet.create({
+    container: {
+      paddingTop: StatusBar.currentHeight + 20,
+      backgroundColor: colors.Background,
+      flex: 1,
+    },
+    redBtn: {
+      height: 25,
+      backgroundColor: colors.Primary,
+      borderRadius: 40,
+      alignSelf: "center",
+      paddingHorizontal: 10,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 15,
+    },
+    redBtnText: {
+      color: colors.White,
+      fontFamily: "Regular",
+      fontSize: 14,
+      marginHorizontal: 10,
+    },
+    topIcons: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginLeft: 30,
+    },
+    circle: {
+      height: 45,
+      width: 45,
+      backgroundColor: colors.Seperator,
+      borderRadius: 22.5,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    pictureHolder: {
+      alignSelf: "center",
+    },
+    heading: {
+      alignSelf: "center",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    name: {
+      fontFamily: "Bold",
+      fontSize: 20,
+      color: colors.Text,
+    },
+    location: {
+      fontFamily: "Regular",
+      fontSize: 16,
+      color: colors.LightText,
+    },
+    seperator: {
+      paddingLeft: 15,
+      paddingVertical: 3,
+      borderTopColor: "#CDCDCD",
+      borderTopWidth: 0.5,
+      borderBottomColor: "#CDCDCD",
+      borderBottomWidth: 0.5,
+      backgroundColor: colors.Seperator,
+    },
+    seperatorHeading: {
+      color: colors.Text,
+      fontFamily: "Regular",
+    },
+  });
 
   return loading == false ? (
     <View style={styles.container}>
@@ -159,10 +234,7 @@ const Settings = (props) => {
                   trackColor={{ false: colors.Primary, true: colors.Gray }}
                   thumbColor={darkMode ? colors.Primary : colors.Gray}
                   value={darkMode}
-                  onValueChange={(value) => {
-                    setDarkMode(value);
-                    EventRegister.emit("darkTheme", value);
-                  }}
+                  onValueChange={themeHandler}
                 />
               </View>
             </View>
@@ -219,70 +291,3 @@ const Settings = (props) => {
 };
 
 export default Settings;
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: StatusBar.currentHeight + 20,
-    backgroundColor: colors.Background,
-    flex: 1,
-  },
-  redBtn: {
-    height: 25,
-    backgroundColor: colors.Primary,
-    borderRadius: 40,
-    alignSelf: "center",
-    paddingHorizontal: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 15,
-  },
-  redBtnText: {
-    color: colors.White,
-    fontFamily: "Regular",
-    fontSize: 14,
-    marginHorizontal: 10,
-  },
-  topIcons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginLeft: 30,
-  },
-  circle: {
-    height: 45,
-    width: 45,
-    backgroundColor: "#e6e6e6",
-    borderRadius: 22.5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  pictureHolder: {
-    alignSelf: "center",
-  },
-  heading: {
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  name: {
-    fontFamily: "Bold",
-    fontSize: 20,
-    color: colors.Text,
-  },
-  location: {
-    fontFamily: "Regular",
-    fontSize: 16,
-    color: colors.LightText,
-  },
-  seperator: {
-    paddingLeft: 15,
-    paddingVertical: 3,
-    borderTopColor: "#CDCDCD",
-    borderTopWidth: 0.5,
-    borderBottomColor: "#CDCDCD",
-    borderBottomWidth: 0.5,
-    backgroundColor: colors.Seperator,
-  },
-  seperatorHeading: {
-    color: colors.Text,
-    fontFamily: "Regular",
-  },
-});

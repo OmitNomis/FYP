@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,11 +10,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
 import RetriveData from "../service/RetriveData";
 import ItemWide from "../components/ItemWide";
+import themeContext from "../assets/theme/colorsContext";
 
 const SoldItems = (props) => {
+  const colors = useContext(themeContext);
   const [loading, setLoading] = useState(true);
   const [bookmark, setBookmark] = useState([]);
   const [refreshing, setRefreshing] = useState(false);

@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   ProgressBarAndroidComponent,
 } from "react-native";
-import colors from "../assets/theme/colors";
+import themeContext from "../assets/theme/colorsContext";
+// import colors from "../assets/theme/colors";
 
 const CustomButton = (props) => {
-  // const colors = useContext(themeContext);
+  const colors = useContext(themeContext);
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View style={[styles.button, { backgroundColor: colors.Primary }]}>

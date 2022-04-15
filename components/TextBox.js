@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -9,10 +9,35 @@ import {
   Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
+import themeContext from "../assets/theme/colorsContext";
 const TextBox = (props) => {
   const [password, setPassword] = useState(props.protected);
-
+  const colors = useContext(themeContext);
+  const styles = StyleSheet.create({
+    container: {
+      height: 50,
+      marginVertical: 5,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    iconStyles: {
+      color: colors.Text,
+      marginRight: 10,
+    },
+    right: {
+      borderBottomColor: colors.Seperator,
+      borderBottomWidth: 1,
+      flexDirection: "row",
+      width: Dimensions.get("window").width - 90,
+      alignItems: "center",
+    },
+    textBoxStyle: {
+      width: "92%",
+      fontFamily: "Regular",
+      color: colors.Text,
+    },
+  });
   return (
     <View style={styles.container}>
       <View>
@@ -21,6 +46,7 @@ const TextBox = (props) => {
       <View>
         <View style={styles.right}>
           <TextInput
+            placeholderTextColor={colors.LightText}
             style={styles.textBoxStyle}
             placeholder={props.placeholder}
             keyboardType={props.keyboardType}
@@ -44,27 +70,3 @@ const TextBox = (props) => {
   );
 };
 export default TextBox;
-const styles = StyleSheet.create({
-  container: {
-    height: 50,
-    marginVertical: 5,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  iconStyles: {
-    color: colors.Secondary,
-    marginRight: 10,
-  },
-  right: {
-    borderBottomColor: "rgba(31, 36, 44, 0.25)",
-    borderBottomWidth: 1,
-    flexDirection: "row",
-    width: Dimensions.get("window").width - 90,
-    alignItems: "center",
-  },
-  textBoxStyle: {
-    width: "92%",
-    fontFamily: "Regular",
-    color: "#000",
-  },
-});

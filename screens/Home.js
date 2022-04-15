@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,17 +10,17 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
 import Icon from "react-native-vector-icons/Ionicons";
 import ItemSmall from "../components/ItemSmall";
 import Genre from "../components/Genre";
 import RetriveData from "../service/RetriveData";
 import ToastMessage from "../components/Toast";
 import Api from "../constants/Api";
-// import themeContext from "../assets/theme/colorsContext";
+import themeContext from "../assets/theme/colorsContext";
 
 const Home = (props) => {
-  // const colors = useContext(themeContext);
+  const colors = useContext(themeContext);
   var redBtn = StyleSheet.flatten({
     height: 25,
     backgroundColor: colors.Primary,
@@ -33,6 +33,16 @@ const Home = (props) => {
     fontFamily: "Regular",
     fontSize: 14,
     marginHorizontal: 10,
+  };
+  var text = {
+    fontFamily: "Regular",
+    fontSize: 16,
+    color: colors.Text,
+  };
+  var heading2 = {
+    fontFamily: "Bold",
+    fontSize: 16,
+    color: colors.Text,
   };
 
   const [genreList, setGenreList] = useState([]);
@@ -129,7 +139,7 @@ const Home = (props) => {
                 width: 55,
                 borderRadius: 10,
                 elevation: 5,
-                backgroundColor: colors.White,
+                backgroundColor: colors.Seperator,
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 20,
@@ -158,7 +168,7 @@ const Home = (props) => {
           >
             Hi there, {myDetails.FirstName}
           </Text>
-          <Text style={styles.text}>What do you want to buy today?</Text>
+          <Text style={text}>What do you want to buy today?</Text>
         </View>
         <View style={styles.searchDiv}>
           <TouchableOpacity
@@ -185,7 +195,7 @@ const Home = (props) => {
         </View>
         <View style={styles.subHeading}>
           <View>
-            <Text style={styles.heading2}>Genre</Text>
+            <Text style={heading2}>Genre</Text>
           </View>
           <TouchableOpacity style={redBtn}>
             <Text style={redBtnText}>See all genres</Text>
@@ -209,7 +219,7 @@ const Home = (props) => {
 
         <View style={styles.subHeading}>
           <View>
-            <Text style={styles.heading2}>Recent posts</Text>
+            <Text style={heading2}>Recent posts</Text>
           </View>
           <TouchableOpacity style={redBtn}>
             <Text style={redBtnText}>See all posts</Text>
@@ -238,9 +248,23 @@ const Home = (props) => {
       </TouchableOpacity>
     </View>
   ) : (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colors.Background,
+      }}
+    >
       <ActivityIndicator color={colors.Primary} size="large" />
-      <Text style={{ fontFamily: "Regular", fontSize: 16, marginTop: 20 }}>
+      <Text
+        style={{
+          fontFamily: "Regular",
+          fontSize: 16,
+          marginTop: 20,
+          color: colors.Text,
+        }}
+      >
         Please Wait...
       </Text>
     </View>
@@ -290,19 +314,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  heading2: {
-    fontFamily: "Bold",
-    fontSize: 16,
-  },
+
   genres: {
     maxHeight: 170,
     marginBottom: 20,
     marginTop: 10,
-  },
-  text: {
-    fontFamily: "Regular",
-    fontSize: 16,
-    color: colors.Text,
   },
   addBall: {
     height: 65,

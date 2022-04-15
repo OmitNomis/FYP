@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -22,24 +22,27 @@ import AddBook from "../screens/AddBook";
 import Book from "../screens/Book";
 import EditBook from "../screens/EditBook";
 import EditProfile from "../screens/EditProfile";
+import themeContext from "../assets/theme/colorsContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-const noHeader = { headerShown: false };
-const headerShown = {
-  headerStyle: {
-    backgroundColor: colors.Primary,
-  },
-  headerTitleAlign: "center",
-  headerShown: true,
-  headerTintColor: "#fff",
-  headerTitleStyle: {
-    fontFamily: "Regular",
-    fontWeight: "600",
-    fontSize: 24,
-  },
-};
+
 function HomeStack(props) {
+  const colors = useContext(themeContext);
+  const noHeader = { headerShown: false };
+  const headerShown = {
+    headerStyle: {
+      backgroundColor: colors.Primary,
+    },
+    headerTitleAlign: "center",
+    headerShown: true,
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      fontFamily: "Regular",
+      fontWeight: "600",
+      fontSize: 24,
+    },
+  };
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -77,6 +80,22 @@ function HomeStack(props) {
   );
 }
 function ScreenStack(props) {
+  const colors = useContext(themeContext);
+
+  const noHeader = { headerShown: false };
+  const headerShown = {
+    headerStyle: {
+      backgroundColor: colors.Primary,
+    },
+    headerTitleAlign: "center",
+    headerShown: true,
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      fontFamily: "Regular",
+      fontWeight: "600",
+      fontSize: 24,
+    },
+  };
   return (
     <Stack.Navigator initialRouteName="Settings">
       <Stack.Screen name="Settings" component={Settings} options={noHeader} />
@@ -126,6 +145,22 @@ function ScreenStack(props) {
 }
 
 function SignInStack(props) {
+  const colors = useContext(themeContext);
+
+  const noHeader = { headerShown: false };
+  const headerShown = {
+    headerStyle: {
+      backgroundColor: colors.Primary,
+    },
+    headerTitleAlign: "center",
+    headerShown: true,
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      fontFamily: "Regular",
+      fontWeight: "600",
+      fontSize: 24,
+    },
+  };
   return (
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={Login} options={noHeader} />

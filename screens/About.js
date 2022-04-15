@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import React, { useState, useEffect } from "react";
-import colors from "../assets/theme/colors";
+import React, { useState, useEffect, useContext } from "react";
+// import colors from "../assets/theme/colors";
+import themeContext from "../assets/theme/colorsContext";
 
 const About = (props) => {
+  const colors = useContext(themeContext);
   useEffect(() => {
     props.navigation.setOptions({
       title: "About Us",
@@ -10,9 +12,23 @@ const About = (props) => {
   }, []);
   return (
     <View style={{ flex: 1, backgroundColor: colors.Background }}>
-      <ScrollView nestedScrollEnabled style={styles.container}>
+      <ScrollView
+        nestedScrollEnabled
+        style={{
+          paddingHorizontal: 30,
+          marginTop: 20,
+          backgroundColor: colors.Background,
+        }}
+      >
         <View>
-          <Text style={styles.text}>
+          <Text
+            style={{
+              textAlign: "justify",
+              fontFamily: "Regular",
+              fontSize: 16,
+              color: colors.Text,
+            }}
+          >
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -23,7 +39,14 @@ const About = (props) => {
             and more recently with desktop publishing software like Aldus
             PageMaker including versions of Lorem Ipsum.
           </Text>
-          <Text style={styles.text}>
+          <Text
+            style={{
+              textAlign: "justify",
+              fontFamily: "Regular",
+              fontSize: 16,
+              color: colors.Text,
+            }}
+          >
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -41,16 +64,3 @@ const About = (props) => {
 };
 
 export default About;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 30,
-    marginTop: 20,
-    backgroundColor: colors.Background,
-  },
-  text: {
-    textAlign: "justify",
-    fontFamily: "Regular",
-    fontSize: 16,
-  },
-});

@@ -21,8 +21,8 @@ import DeviceStorage from "../config/DeviceStorage";
 import ToastMessage from "../components/Toast";
 import Icon from "react-native-vector-icons/Ionicons";
 
-// import themeContext from "../assets/theme/colorsContext";
-import colors from "../assets/theme/colors";
+import themeContext from "../assets/theme/colorsContext";
+// import colors from "../assets/theme/colors";
 
 const Login = (props) => {
   const [email, setEmail] = useState("simon98190@gmail.com");
@@ -30,6 +30,7 @@ const Login = (props) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const colors = useContext(themeContext);
   const validateForm = () => {
     let isValid = true;
     if (email.trim() === "") {
@@ -82,6 +83,14 @@ const Login = (props) => {
     }
     setIsLoading(false);
   };
+  const container = {
+    paddingTop: StatusBar.currentHeight,
+    backgroundColor: "#fff",
+    paddingHorizontal: 30,
+    minHeight: Dimensions.get("screen").height,
+    paddingBottom: 20,
+    backgroundColor: colors.Background,
+  };
 
   useEffect(() => {
     const backAction = () => {
@@ -105,14 +114,13 @@ const Login = (props) => {
     );
     return () => backHandler.remove();
   }, []);
-
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: colors.Background }}>
       <ScrollView
         nestedScrollEnabled
         // contentContainerStyle={{ paddingBottom: 30 }}
       >
-        <View style={styles.container}>
+        <View style={container}>
           <View style={styles.head}>
             <View style={styles.logoHolder}>
               <Image
@@ -183,7 +191,6 @@ const Login = (props) => {
               <CustomButton
                 title="Login"
                 onPress={() => {
-                  // props.navigation.replace("HomeStack");
                   if (validateForm()) {
                     SignIn();
                   }
@@ -217,13 +224,6 @@ const Login = (props) => {
 export default Login;
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: "#fff",
-    paddingHorizontal: 30,
-    minHeight: Dimensions.get("screen").height,
-    paddingBottom: 20,
-  },
   head: {
     flex: 0.5,
     justifyContent: "flex-end",
@@ -253,17 +253,6 @@ const styles = StyleSheet.create({
   forgotPassword: {
     marginBottom: 20,
   },
-  lineStyle: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-  },
-  dividerText: {
-    width: 50,
-    textAlign: "center",
-    fontFamily: "Regular",
-    marginVertical: 30,
-  },
   button: {
     backgroundColor: "#F1F5F6",
     height: 60,
@@ -272,10 +261,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     marginBottom: 20,
-  },
-  buttonTitle: {
-    fontFamily: "Regular",
-    fontSize: 20,
-    color: "#000",
   },
 });

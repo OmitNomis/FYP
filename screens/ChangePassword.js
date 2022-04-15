@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -8,13 +8,14 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
 import CustomButton from "../components/CustomButton";
 import RetriveData from "../service/RetriveData";
 import TextBox from "../components/TextBox";
 import api from "../constants/Api";
 import ToastMessage from "../components/Toast";
 import request from "../config/RequestManager";
+import themeContext from "../assets/theme/colorsContext";
 const ChangePassword = (props) => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +24,7 @@ const ChangePassword = (props) => {
   const [passwordError, setPasswordError] = useState("");
   const [oldPasswordError, setOldPasswordError] = useState("");
   const [myDetails, setMyDetails] = useState([]);
+  const colors = useContext(themeContext);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -102,9 +104,28 @@ const ChangePassword = (props) => {
     }
     return isValid;
   };
-
+  const styles = StyleSheet.create({
+    container: {
+      paddingTop: StatusBar.currentHeight,
+      paddingHorizontal: 30,
+      backgroundColor: colors.Background,
+    },
+    bodyText: {
+      fontFamily: "Regular",
+      fontSize: 16,
+      color: colors.Secondary,
+      textAlign: "justify",
+      color: colors.Text,
+    },
+    input: {
+      marginTop: 30,
+    },
+    button: {
+      marginTop: 30,
+    },
+  });
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: colors.Background }}>
       <ScrollView nestedScrollEnabled>
         <View style={styles.container}>
           <View style={styles.body}>
@@ -196,28 +217,3 @@ const ChangePassword = (props) => {
   );
 };
 export default ChangePassword;
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: StatusBar.currentHeight,
-    paddingHorizontal: 30,
-    backgroundColor: "#fff",
-  },
-
-  headerText: {
-    fontFamily: "Regular",
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  bodyText: {
-    fontFamily: "Regular",
-    fontSize: 16,
-    color: colors.Secondary,
-    textAlign: "justify",
-  },
-  input: {
-    marginTop: 30,
-  },
-  button: {
-    marginTop: 30,
-  },
-});

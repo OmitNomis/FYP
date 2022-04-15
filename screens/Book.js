@@ -11,12 +11,13 @@ import {
   Linking,
   ActivityIndicator,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RetriveData from "../service/RetriveData";
 import ToastMessage from "../components/Toast";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
 import api from "../constants/Api";
 import request from "../config/RequestManager";
+import themeContext from "../assets/theme/colorsContext";
 const Book = (props) => {
   const bookDetails = props.route.params.params.bookDetails;
   const [loading, setLoading] = useState(true);
@@ -33,6 +34,7 @@ const Book = (props) => {
     });
     getUserById();
   }, []);
+  const colors = useContext(themeContext);
   const getUserById = async () => {
     var response = await RetriveData.GetUserById(bookDetails.userID);
     if (response != undefined) {
@@ -199,6 +201,97 @@ const Book = (props) => {
 
     Linking.openURL(call);
   };
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: colors.Background,
+    },
+    imageContainer: {
+      height: 250,
+      backgroundColor: "red",
+      margin: 10,
+      marginBottom: 0,
+      borderRadius: 10,
+    },
+    headerContainer: {
+      paddingHorizontal: 20,
+      marginTop: 15,
+    },
+    title: {
+      fontFamily: "Bold",
+      fontSize: 20,
+      color: colors.Text,
+    },
+    price: { fontFamily: "Regular", fontSize: 16, color: colors.LightText },
+    customerDetailsContainer: {
+      borderColor: colors.Seperator,
+      borderWidth: 0.3,
+      paddingHorizontal: 20,
+      justifyContent: "space-between",
+      flexDirection: "row",
+      alignItems: "center",
+      marginVertical: 20,
+    },
+    profilePicContainer: {
+      height: 60,
+      width: 60,
+      borderRadius: 30,
+      marginLeft: 0,
+      margin: 10,
+    },
+    BookcustomerDetails: {},
+    customerName: {
+      fontFamily: "Bold",
+      fontSize: 16,
+      color: colors.Text,
+    },
+    customerPhone: {
+      fontFamily: "Regular",
+      color: colors.LightText,
+    },
+    genreList: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      paddingHorizontal: 30,
+      marginTop: 10,
+    },
+    bookDetails: {
+      borderColor: colors.Seperator,
+      borderWidth: 0.3,
+      paddingHorizontal: 20,
+      paddingTop: 20,
+    },
+    detail: { height: 35 },
+    detailText: {
+      fontFamily: "Regular",
+      fontSize: 14,
+      color: colors.LightText,
+    },
+    genre: {
+      borderRadius: 20,
+      height: 40,
+      borderWidth: 1,
+      borderColor: colors.Seperator,
+      justifyContent: "center",
+      paddingHorizontal: 15,
+    },
+    footer: {
+      flexDirection: "row",
+      height: 50,
+    },
+    footerButton: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100%",
+      borderWidth: 0.3,
+      backgroundColor: colors.Seperator,
+    },
+    footerText: {
+      fontFamily: "Regular",
+      fontSize: 14,
+      color: colors.Text,
+    },
+  });
 
   return loading == false ? (
     <View style={{ flex: 1 }}>
@@ -217,7 +310,15 @@ const Book = (props) => {
           {postGenre.map((item) => {
             return (
               <View style={styles.genre}>
-                <Text>{item}</Text>
+                <Text
+                  style={{
+                    color: colors.LightText,
+                    fontFamily: "Regular",
+                    fontSize: 14,
+                  }}
+                >
+                  {item}
+                </Text>
               </View>
             );
           })}
@@ -242,7 +343,7 @@ const Book = (props) => {
         </View>
         <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
           <Text
-            style={{ fontFamily: "Bold", color: colors.Black, fontSize: 16 }}
+            style={{ fontFamily: "Bold", color: colors.Text, fontSize: 16 }}
           >
             Book Details
           </Text>
@@ -357,9 +458,23 @@ const Book = (props) => {
       )}
     </View>
   ) : (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colors.Background,
+      }}
+    >
       <ActivityIndicator color={colors.Primary} size="large" />
-      <Text style={{ fontFamily: "Regular", fontSize: 16, marginTop: 20 }}>
+      <Text
+        style={{
+          fontFamily: "Regular",
+          fontSize: 16,
+          marginTop: 20,
+          color: colors.Text,
+        }}
+      >
         Please Wait...
       </Text>
     </View>
@@ -367,94 +482,3 @@ const Book = (props) => {
 };
 
 export default Book;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.Background,
-  },
-  imageContainer: {
-    height: 250,
-    backgroundColor: "red",
-    margin: 10,
-    marginBottom: 0,
-    borderRadius: 10,
-  },
-  headerContainer: {
-    paddingHorizontal: 20,
-    marginTop: 15,
-  },
-  title: {
-    fontFamily: "Bold",
-    fontSize: 20,
-    color: colors.Black,
-  },
-  price: { fontFamily: "Regular", fontSize: 16, color: colors.Text },
-  customerDetailsContainer: {
-    borderColor: "#F0F0F0",
-    borderWidth: 1,
-    paddingHorizontal: 20,
-    justifyContent: "space-between",
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 20,
-  },
-  profilePicContainer: {
-    height: 60,
-    width: 60,
-    borderRadius: 30,
-    marginLeft: 0,
-    margin: 10,
-  },
-  BookcustomerDetails: {},
-  customerName: {
-    fontFamily: "Bold",
-    fontSize: 16,
-    color: colors.Black,
-  },
-  customerPhone: {
-    fontFamily: "Regular",
-    color: colors.Text,
-  },
-  genreList: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    paddingHorizontal: 30,
-    marginTop: 10,
-  },
-  bookDetails: {
-    borderColor: "#F0F0F0",
-    borderWidth: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  detail: { height: 35 },
-  detailText: {
-    fontFamily: "Regular",
-    fontSize: 14,
-  },
-  genre: {
-    borderRadius: 20,
-    height: 40,
-    borderWidth: 1,
-    borderColor: colors.Gray,
-    justifyContent: "center",
-    paddingHorizontal: 15,
-  },
-  footer: {
-    flexDirection: "row",
-    height: 50,
-  },
-  footerButton: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-    borderWidth: 1,
-    borderColor: colors.Gray,
-  },
-  footerText: {
-    fontFamily: "Regular",
-    fontSize: 14,
-    color: colors.Text,
-  },
-});

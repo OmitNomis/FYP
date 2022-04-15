@@ -12,18 +12,27 @@ import {
   StatusBar,
 } from "react-native";
 import TextBox from "../components/TextBox";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
+import themeContext from "../assets/theme/colorsContext";
 const Register = (props) => {
+  const colors = useContext(themeContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [fullName, setFullName] = useState("");
+  const container = {
+    backgroundColor: "#fff",
+    paddingTop: StatusBar.currentHeight,
+    paddingHorizontal: 30,
+    minHeight: Dimensions.get("screen").height,
+    backgroundColor: colors.Background,
+  };
 
   return (
     <View style={{ flex: 1 }}>
       <ScrollView nestedScrollEnabled>
-        <View style={styles.container}>
+        <View style={container}>
           <View style={styles.head}>
             <View style={styles.logoHolder}>
               <Image
@@ -86,8 +95,27 @@ const Register = (props) => {
                 // props.navigation.navigate("OTP");
               }}
             >
-              <View style={styles.button}>
-                <Text style={styles.buttonTitle}>Register</Text>
+              <View
+                style={{
+                  backgroundColor: colors.Seperator,
+                  height: 60,
+                  borderRadius: 12,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                  marginTop: 20,
+                  marginBottom: 20,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Regular",
+                    fontSize: 20,
+                    color: colors.Text,
+                  }}
+                >
+                  Register
+                </Text>
               </View>
             </TouchableOpacity>
             <View
@@ -116,12 +144,6 @@ const Register = (props) => {
 };
 export default Register;
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#fff",
-    paddingTop: StatusBar.currentHeight,
-    paddingHorizontal: 30,
-    minHeight: Dimensions.get("screen").height,
-  },
   head: {
     flex: 0.5,
     justifyContent: "flex-end",
@@ -142,28 +164,5 @@ const styles = StyleSheet.create({
     fontFamily: "Bold",
     fontSize: 36,
     marginBottom: 20,
-  },
-
-  dividerText: {
-    width: 50,
-    textAlign: "center",
-    fontFamily: "Regular",
-    color: colors.Secondary,
-    marginVertical: 30,
-  },
-  button: {
-    backgroundColor: "#F1F5F6",
-    height: 60,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  buttonTitle: {
-    fontFamily: "Regular",
-    fontSize: 20,
-    color: "#000",
   },
 });

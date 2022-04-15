@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import colors from "../assets/theme/colors";
+import themeContext from "../assets/theme/colorsContext";
+// import colors from "../assets/theme/colors";
 const SettingsBtn = (props) => {
+  const colors = useContext(themeContext);
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View style={styles.container}>
@@ -22,7 +24,7 @@ const SettingsBtn = (props) => {
           <Icon
             name="chevron-forward"
             size={18}
-            style={{ color: "rgba(31, 36, 44, 0.5)" }}
+            style={{ color: colors.Text }}
           />
         </View>
       </View>

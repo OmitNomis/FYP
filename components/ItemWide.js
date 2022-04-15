@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { useState, useEffect } from "react";
-import colors from "../assets/theme/colors";
+import React, { useState, useEffect, useContext } from "react";
+// import colors from "../assets/theme/colors";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RetriveData from "../service/RetriveData";
 import Api from "../constants/Api";
+import themeContext from "../assets/theme/colorsContext";
 
 const ItemWide = (props) => {
+  const colors = useContext(themeContext);
   const bookDetails = props.data;
   useEffect(() => {
     getUserById();
@@ -21,7 +23,60 @@ const ItemWide = (props) => {
       ToastMessage.Short("Error Loading User Info ");
     }
   };
-
+  const styles = StyleSheet.create({
+    container: {
+      borderColor: colors.Border,
+      borderWidth: 1,
+      borderRadius: 10,
+      backgroundColor: colors.ItemBackground,
+      paddingHorizontal: 15,
+      paddingVertical: 10,
+      marginBottom: 20,
+    },
+    dateHolder: {
+      marginBottom: 10,
+    },
+    date: {
+      color: colors.LightText,
+      fontFamily: "Regular",
+      fontSize: 14,
+    },
+    imageHolder: {
+      height: 100,
+      width: 130,
+      backgroundColor: "red",
+      borderRadius: 10,
+    },
+    bottom: {
+      flexDirection: "row",
+    },
+    itemDetails: {
+      marginLeft: 10,
+    },
+    heading: {
+      flexDirection: "row",
+    },
+    headingText: {
+      fontFamily: "Bold",
+      fontSize: 16,
+      marginLeft: 10,
+      marginBottom: 10,
+      color: colors.Text,
+    },
+    info: {},
+    bottomTextHolder: {
+      flexDirection: "row",
+    },
+    text: {
+      fontFamily: "Regular",
+      fontSize: 14,
+      marginLeft: 10,
+      color: colors.LightText,
+    },
+    iconStyles: {
+      color: colors.LightText,
+    },
+  });
   return (
     loading == false && (
       <TouchableOpacity
@@ -79,57 +134,3 @@ const ItemWide = (props) => {
 };
 
 export default ItemWide;
-
-const styles = StyleSheet.create({
-  container: {
-    borderColor: colors.Gray,
-    borderWidth: 1,
-    borderRadius: 10,
-    backgroundColor: colors.White,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginBottom: 20,
-  },
-  dateHolder: {
-    marginBottom: 10,
-  },
-  date: {
-    color: colors.LightText,
-    fontFamily: "Regular",
-    fontSize: 14,
-  },
-  imageHolder: {
-    height: 100,
-    width: 130,
-    backgroundColor: "red",
-    borderRadius: 10,
-  },
-  bottom: {
-    flexDirection: "row",
-  },
-  itemDetails: {
-    marginLeft: 10,
-  },
-  heading: {
-    flexDirection: "row",
-  },
-  headingText: {
-    fontFamily: "Bold",
-    fontSize: 16,
-    marginLeft: 10,
-    marginBottom: 10,
-  },
-  info: {},
-  bottomTextHolder: {
-    flexDirection: "row",
-  },
-  text: {
-    fontFamily: "Regular",
-    fontSize: 14,
-    marginLeft: 10,
-    color: colors.LightText,
-  },
-  iconStyles: {
-    color: colors.LightText,
-  },
-});
