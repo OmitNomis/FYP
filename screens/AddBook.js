@@ -6,9 +6,10 @@ import {
   Switch,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
-import React, { useState, useEffect } from "react";
-import colors from "../assets/theme/colors";
+import React, { useState, useEffect, useContext } from "react";
+// import colors from "../assets/theme/colors";
 import { Dropdown } from "react-native-element-dropdown";
 
 import TextBoxOutline from "../components/TextBoxOutline";
@@ -21,6 +22,7 @@ import Uuid from "react-native-uuid";
 import SelectBox from "react-native-multi-selectbox";
 import { xorBy } from "lodash";
 import * as ImagePicker from "expo-image-picker";
+import themeContext from "../assets/theme/colorsContext";
 
 const priceType = [
   { label: "Negotiable", value: "1" },
@@ -68,6 +70,7 @@ const AddBook = (props) => {
     }
   };
 
+  const colors = useContext(themeContext);
   const [uuid, setUuid] = useState();
   const [userInfo, setUserInfo] = useState();
 
@@ -209,37 +212,78 @@ const AddBook = (props) => {
       setUuid(Uuid.v4());
     }
   };
+  const styles = StyleSheet.create({
+    text: {
+      textAlign: "justify",
+      fontFamily: "Regular",
+      fontSize: 16,
+    },
+    imageUpload: {
+      height: 150,
+      width: 150,
+      borderRadius: 100,
+      borderWidth: 1,
+      borderStyle: "dashed",
+      backgroundColor: colors.Seperator,
+      borderColor: colors.Purple,
+      alignSelf: "center",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    icon: {
+      marginRight: 5,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+      fontFamily: "Regular",
+      color: colors.LightText,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+      fontFamily: "Regular",
+      color: colors.Text,
+    },
+  });
   return (
-    <View style={{ flex: 1, backgroundColor: colors.Background }}>
+    <KeyboardAvoidingView
+      behavior="height"
+      style={{ flex: 1, backgroundColor: colors.Background }}
+    >
       <ScrollView
         nestedScrollEnabled
-        style={styles.container}
-        contentContainerStyle={{ paddingBottom: 30 }}
+        style={{
+          paddingHorizontal: 30,
+          paddingTop: 20,
+          backgroundColor: colors.Background,
+        }}
+        contentContainerStyle={{ paddingBottom: 30, flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.addImageSection}>
-          <View style={styles.addImage}>
-            <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
-              {!image ? (
-                <Text
-                  style={{
-                    fontFamily: "Regular",
-                    fontSize: 16,
-                    color: colors.Gray,
-                  }}
-                >
-                  Upload Image
-                </Text>
-              ) : (
-                <Image
-                  style={{ height: "100%", width: "100%", borderRadius: 100 }}
-                  source={{ uri: image.uri }}
-                />
-              )}
-            </TouchableOpacity>
+        <KeyboardAvoidingView behavior="padding" keyboardShouldPersistTaps>
+          <View style={styles.addImageSection}>
+            <View style={{ marginBottom: 20 }}>
+              <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
+                {!image ? (
+                  <Text
+                    style={{
+                      fontFamily: "Regular",
+                      fontSize: 16,
+                      color: colors.LightText,
+                    }}
+                  >
+                    Upload Image
+                  </Text>
+                ) : (
+                  <Image
+                    style={{ height: "100%", width: "100%", borderRadius: 100 }}
+                    source={{ uri: image.uri }}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
         <View style={styles.form}>
           <TextBoxOutline
             placeholder="Book Title"
@@ -260,7 +304,7 @@ const AddBook = (props) => {
             inputPlaceholder={"Select Genre"}
             isMulti
             containerStyle={{
-              backgroundColor: "#F0F0F0",
+              backgroundColor: colors.Seperator,
               borderRadius: 8,
               paddingLeft: 20,
               height: 50,
@@ -285,7 +329,15 @@ const AddBook = (props) => {
               onChangeText={(text) => setPrice(text)}
             />
             <Dropdown
-              style={[styles.dropdown]}
+              style={{
+                height: 50,
+                backgroundColor: colors.Seperator,
+                borderRadius: 8,
+                width: "48%",
+                marginVertical: 6,
+                paddingLeft: 20,
+                paddingRight: 10,
+              }}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
@@ -308,7 +360,15 @@ const AddBook = (props) => {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Dropdown
-              style={[styles.dropdown]}
+              style={{
+                height: 50,
+                backgroundColor: colors.Seperator,
+                borderRadius: 8,
+                width: "48%",
+                marginVertical: 6,
+                paddingLeft: 20,
+                paddingRight: 10,
+              }}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
@@ -327,7 +387,15 @@ const AddBook = (props) => {
               }}
             />
             <Dropdown
-              style={[styles.dropdown]}
+              style={{
+                height: 50,
+                backgroundColor: colors.Seperator,
+                borderRadius: 8,
+                width: "48%",
+                marginVertical: 6,
+                paddingLeft: 20,
+                paddingRight: 10,
+              }}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
@@ -362,7 +430,15 @@ const AddBook = (props) => {
                 }}
                 value={trade}
               />
-              <Text>Open for Trade</Text>
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: "Regular",
+                  color: colors.Text,
+                }}
+              >
+                Open for Trade
+              </Text>
             </View>
             {trade == true && (
               <TextBoxOutline
@@ -402,54 +478,8 @@ const AddBook = (props) => {
           />
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default AddBook;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 30,
-    paddingTop: 20,
-    backgroundColor: colors.Background,
-  },
-  text: {
-    textAlign: "justify",
-    fontFamily: "Regular",
-    fontSize: 16,
-  },
-  imageUpload: {
-    height: 150,
-    width: 150,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderStyle: "dashed",
-    borderColor: colors.Gray,
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  dropdown: {
-    height: 50,
-    backgroundColor: "#F0F0F0",
-    borderRadius: 8,
-    width: "48%",
-    marginVertical: 6,
-    paddingLeft: 20,
-    paddingRight: 10,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-    fontFamily: "Regular",
-    color: colors.Text,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-    fontFamily: "Regular",
-    color: colors.Text,
-  },
-});

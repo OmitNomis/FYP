@@ -115,11 +115,11 @@ const Login = (props) => {
     return () => backHandler.remove();
   }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: colors.Background }}>
-      <ScrollView
-        nestedScrollEnabled
-        // contentContainerStyle={{ paddingBottom: 30 }}
-      >
+    <KeyboardAvoidingView
+      behavior="height"
+      style={{ flex: 1, backgroundColor: colors.Background }}
+    >
+      <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false}>
         <View style={container}>
           <View style={styles.head}>
             <View style={styles.logoHolder}>
@@ -130,7 +130,16 @@ const Login = (props) => {
             </View>
           </View>
           <View style={styles.heading}>
-            <Text style={styles.headingText}>Login</Text>
+            <Text
+              style={{
+                fontFamily: "Bold",
+                fontSize: 36,
+                marginBottom: 20,
+                color: colors.Text,
+              }}
+            >
+              Login
+            </Text>
           </View>
           <View style={styles.body}>
             <KeyboardAvoidingView>
@@ -218,32 +227,25 @@ const Login = (props) => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 export default Login;
 
 const styles = StyleSheet.create({
   head: {
-    flex: 0.5,
     justifyContent: "flex-end",
     paddingBottom: 25,
   },
-  body: {
-    flex: 0.5,
-  },
+  body: {},
   logoHolder: {
+    marginVertical: 80,
     height: 145,
     width: 190,
   },
   logo: {
     height: "100%",
     width: "100%",
-  },
-  headingText: {
-    fontFamily: "Bold",
-    fontSize: 36,
-    marginBottom: 20,
   },
   forgotPasswordHolder: {
     flexDirection: "row",
