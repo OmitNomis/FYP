@@ -25,7 +25,7 @@ const ItemWide = (props) => {
   };
   const styles = StyleSheet.create({
     container: {
-      borderColor: colors.Border,
+      borderColor: colors.Seperator,
       borderWidth: 1,
       borderRadius: 10,
       backgroundColor: colors.ItemBackground,

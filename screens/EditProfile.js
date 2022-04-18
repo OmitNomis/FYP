@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   Image,
   KeyboardAvoidingView,
 } from "react-native";
-import colors from "../assets/theme/colors";
+// import colors from "../assets/theme/colors";
 import CustomButton from "../components/CustomButton";
 import RetriveData from "../service/RetriveData";
 import api from "../constants/Api";
@@ -18,6 +18,7 @@ import ToastMessage from "../components/Toast";
 import request from "../config/RequestManager";
 import NoIconText from "../components/NoIconText";
 import * as ImagePicker from "expo-image-picker";
+import themeContext from "../assets/theme/colorsContext";
 
 const EditProfile = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -105,7 +106,7 @@ const EditProfile = (props) => {
     return expression.test(String(email).toLowerCase());
   };
   const uploadImage = async () => {
-    if (image != null) {
+    if (imageUpdated == true) {
       const formData = new FormData();
       formData.append("image", {
         name:
@@ -133,7 +134,7 @@ const EditProfile = (props) => {
           console.log("err" + err);
         });
     } else {
-      post();
+      post(image.substr(image.lastIndexOf("/") + 1));
     }
   };
 
@@ -189,9 +190,31 @@ const EditProfile = (props) => {
       setImage(result);
     }
   };
-
+  const colors = useContext(themeContext);
+  const styles = StyleSheet.create({
+    container: {
+      paddingHorizontal: 30,
+      backgroundColor: "#fff",
+      flex: 1,
+    },
+    buttonDiv: {
+      marginTop: 30,
+    },
+    imageUpload: {
+      height: 150,
+      width: 150,
+      borderRadius: 100,
+      borderWidth: 1,
+      borderStyle: "dashed",
+      borderColor: colors.Gray,
+      alignSelf: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 30,
+    },
+  });
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior="height" style={styles.container}>
       <ScrollView
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
@@ -199,165 +222,137 @@ const EditProfile = (props) => {
       >
         {isLoading == false && (
           <>
-            <KeyboardAvoidingView behavior="padding">
-              <View style={styles.imageSection}>
-                <TouchableOpacity
-                  style={styles.imageUpload}
-                  onPress={pickImage}
-                >
-                  {!image ? (
-                    <Text
-                      style={{
-                        fontFamily: "Regular",
-                        fontSize: 16,
-                        color: colors.Gray,
-                      }}
-                    >
-                      Upload Image
-                    </Text>
-                  ) : (
-                    <Image
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        borderRadius: 100,
-                      }}
-                      source={{
-                        uri:
-                          imageUpdated == true
-                            ? image.uri
-                            : api.BaseUrl + myInfo.ProfileImage,
-                      }}
-                    />
-                  )}
-                </TouchableOpacity>
-              </View>
-              <View style={styles.form}>
-                <NoIconText
-                  icon="person-circle-outline"
-                  label="First Name"
-                  value={firstName}
-                  onChangeText={(text) => setFirstName(text)}
-                />
-                {firstNameError.length > 0 && (
+            <View style={styles.imageSection}>
+              <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
+                {!image ? (
                   <Text
                     style={{
-                      color: "red",
                       fontFamily: "Regular",
-                      fontSize: 14,
-                      marginLeft: 30,
+                      fontSize: 16,
+                      color: colors.Gray,
                     }}
                   >
-                    {firstNameError}
+                    Upload Image
                   </Text>
-                )}
-                <NoIconText
-                  icon="location-outline"
-                  label="Last Name"
-                  value={lastName}
-                  onChangeText={(text) => setLastName(text)}
-                />
-                {lastNameError.length > 0 && (
-                  <Text
+                ) : (
+                  <Image
                     style={{
-                      color: "red",
-                      fontFamily: "Regular",
-                      fontSize: 14,
-                      marginLeft: 30,
+                      height: "100%",
+                      width: "100%",
+                      borderRadius: 100,
                     }}
-                  >
-                    {lastNameError}
-                  </Text>
-                )}
-                <NoIconText
-                  icon="call-outline"
-                  label="City"
-                  value={city}
-                  onChangeText={(text) => setCity(text)}
-                />
-                {cityError.length > 0 && (
-                  <Text
-                    style={{
-                      color: "red",
-                      fontFamily: "Regular",
-                      fontSize: 14,
-                      marginLeft: 30,
+                    source={{
+                      uri:
+                        imageUpdated == true
+                          ? image.uri
+                          : api.BaseUrl + myInfo.ProfileImage,
                     }}
-                  >
-                    {cityError}
-                  </Text>
+                  />
                 )}
-                <NoIconText
-                  icon="at"
-                  label="Email Address"
-                  value={email}
-                  keyboardType="email-address"
-                  onChangeText={(text) => setEmail(text)}
-                  selectTextOnFocus={false}
-                />
-                {emailError.length > 0 && (
-                  <Text
-                    style={{
-                      color: "red",
-                      fontFamily: "Regular",
-                      fontSize: 14,
-                      marginLeft: 30,
-                    }}
-                  >
-                    {emailError}
-                  </Text>
-                )}
-
-                <NoIconText
-                  icon="call-outline"
-                  label="Phone Number"
-                  keyboardType="numeric"
-                  value={phoneNumber}
-                  editable={false}
-                  onChangeText={(text) =>
-                    setPhoneNumber(validatePhoneNumber(text))
-                  }
-                />
-              </View>
-              <View style={styles.buttonDiv}>
-                <CustomButton
-                  title="Save Profile"
-                  onPress={() => {
-                    if (validateForm()) {
-                      uploadImage();
-                    }
+              </TouchableOpacity>
+            </View>
+            <View style={styles.form}>
+              <NoIconText
+                icon="person-circle-outline"
+                label="First Name"
+                value={firstName}
+                onChangeText={(text) => setFirstName(text)}
+              />
+              {firstNameError.length > 0 && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontFamily: "Regular",
+                    fontSize: 14,
+                    marginLeft: 30,
                   }}
-                />
-              </View>
-            </KeyboardAvoidingView>
+                >
+                  {firstNameError}
+                </Text>
+              )}
+              <NoIconText
+                icon="location-outline"
+                label="Last Name"
+                value={lastName}
+                onChangeText={(text) => setLastName(text)}
+              />
+              {lastNameError.length > 0 && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontFamily: "Regular",
+                    fontSize: 14,
+                    marginLeft: 30,
+                  }}
+                >
+                  {lastNameError}
+                </Text>
+              )}
+              <NoIconText
+                icon="call-outline"
+                label="City"
+                value={city}
+                onChangeText={(text) => setCity(text)}
+              />
+              {cityError.length > 0 && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontFamily: "Regular",
+                    fontSize: 14,
+                    marginLeft: 30,
+                  }}
+                >
+                  {cityError}
+                </Text>
+              )}
+              <NoIconText
+                icon="at"
+                label="Email Address"
+                value={email}
+                keyboardType="email-address"
+                onChangeText={(text) => setEmail(text)}
+                selectTextOnFocus={false}
+              />
+              {emailError.length > 0 && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontFamily: "Regular",
+                    fontSize: 14,
+                    marginLeft: 30,
+                  }}
+                >
+                  {emailError}
+                </Text>
+              )}
+
+              <NoIconText
+                icon="call-outline"
+                label="Phone Number"
+                keyboardType="numeric"
+                value={phoneNumber}
+                editable={false}
+                onChangeText={(text) =>
+                  setPhoneNumber(validatePhoneNumber(text))
+                }
+              />
+            </View>
+            <View style={styles.buttonDiv}>
+              <CustomButton
+                title="Save Profile"
+                onPress={() => {
+                  if (validateForm()) {
+                    uploadImage();
+                  }
+                }}
+              />
+            </View>
           </>
         )}
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 export default EditProfile;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 30,
-    backgroundColor: "#fff",
-    flex: 1,
-  },
-  buttonDiv: {
-    marginTop: 30,
-  },
-  imageUpload: {
-    height: 150,
-    width: 150,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderStyle: "dashed",
-    borderColor: colors.Gray,
-    alignSelf: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 30,
-  },
-});

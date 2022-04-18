@@ -28,7 +28,7 @@ const colors = {
     LightText: "#c1c1c1",
     Seperator: "#494649",
     ItemBackground: "#302e30",
-    LightPurple: "#522654",
+    LightPurple: "#7d2b93",
   },
 };
 
