@@ -1,21 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
+import themeContext from "../assets/theme/colorsContext";
 
 const Message = (props) => {
+  const colors = useContext(themeContext);
   const isOnLeft = (type) => {
     if (props.isLeft && type === "messageContainer") {
       return {
         alignSelf: "flex-start",
-        backgroundColor: "#f0f0f0",
+        backgroundColor: colors.Seperator,
         borderTopLeftRadius: 0,
       };
     } else if (props.isLeft && type === "message") {
       return {
-        color: "#000",
+        color: colors.Text,
       };
     } else if (props.isLeft && type === "time") {
       return {
-        color: "darkGrey",
+        color: colors.LightText,
       };
     } else {
       return {
@@ -23,11 +25,16 @@ const Message = (props) => {
       };
     }
   };
+  const messageTime = () => {
+    var date = new Date(props.time);
+    let time = date.getHours() + ":" + date.getMinutes();
+    return time;
+  };
   return (
     <View
       style={[
         {
-          backgroundColor: "red",
+          backgroundColor: colors.Purple,
           maxWidth: "80%",
           alignSelf: "flex-end",
           flexDirection: "row",
@@ -44,7 +51,12 @@ const Message = (props) => {
       <View style={{ backgroundColor: "transparent", maxWidth: "80%" }}>
         <Text
           style={[
-            { color: "white", alignSelf: "flex-start", fontSize: 15 },
+            {
+              color: colors.Text,
+              alignSelf: "flex-start",
+              fontSize: 15,
+              fontFamily: "Regular",
+            },
             isOnLeft("message"),
           ]}
         >
@@ -68,7 +80,7 @@ const Message = (props) => {
             isOnLeft("time"),
           ]}
         >
-          {props.time}
+          {messageTime()}
         </Text>
       </View>
     </View>

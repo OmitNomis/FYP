@@ -4,10 +4,12 @@ import {
   View,
   StatusBar,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import React, { useContext } from "react";
 import themeContext from "../assets/theme/colorsContext";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Api from "../constants/Api";
 
 const MessageHeader = (props) => {
   const colors = useContext(themeContext);
@@ -51,10 +53,14 @@ const MessageHeader = (props) => {
               height: 40,
               width: 40,
               borderRadius: 20,
-              backgroundColor: "black",
               marginRight: 20,
             }}
-          ></View>
+          >
+            <Image
+              style={{ height: "100%", width: "100%", borderRadius: 20 }}
+              source={{ uri: Api.BaseUrl + props.profileImage }}
+            />
+          </View>
           <Text
             style={{
               fontFamily: "Regular",
@@ -62,7 +68,7 @@ const MessageHeader = (props) => {
               color: colors.theme == "light" ? "#FFF" : colors.Text,
             }}
           >
-            Header
+            {props.firstName} {props.lastName}
           </Text>
         </View>
       </View>

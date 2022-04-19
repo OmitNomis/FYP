@@ -23,12 +23,30 @@ const RetriveData = {
       });
     return response.data.data;
   },
+  GetChatList: async function GetChatList(id) {
+    var response = await (await request())
+      .get(api.GetChatList + "/" + id)
+      .catch(function (error) {
+        console.log(error);
+        ToastMessage.Short("Error loading Chat List");
+      });
+    return response.data.data;
+  },
   GetPostsByUser: async function GetPostsByUser(id) {
     var response = await (await request())
       .get(api.GetPostsByUser + "/" + id)
       .catch(function (error) {
         console.log(error);
         ToastMessage.Short("Error loading User Posts");
+      });
+    return response.data.data;
+  },
+  GetChat: async function GetChat(senderId, receiverId) {
+    var response = await (await request())
+      .get(api.GetChat + "/" + senderId + "/" + receiverId)
+      .catch(function (error) {
+        console.log(error);
+        ToastMessage.Short("Error loading Conversation");
       });
     return response.data.data;
   },

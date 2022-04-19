@@ -1,79 +1,117 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 import themeContext from "../assets/theme/colorsContext";
+import Api from "../constants/Api";
+import RetriveData from "../service/RetriveData";
 const PersonChat = (props) => {
   const colors = useContext(themeContext);
+  const [userInfo, setUserInfo] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const messageTime = () => {
+    var date = new Date(props.time);
+    let time = date.getHours() + ":" + date.getMinutes();
+    return time;
+  };
+  const refresh = () => {
+    props.refresh();
+  };
+  useEffect(() => {
+    getUserInfo();
+  }, []);
+
+  const getUserInfo = async (id) => {
+    var response = await RetriveData.GetUserById(props.userId);
+    setUserInfo(response[0]);
+    setLoading(false);
+  };
+
   return (
-    <TouchableOpacity
-      onPress={() => props.navigation.navigate("ChatMessage")}
-      style={{
-        backgroundColor: colors.backgroundColor,
-        height: 80,
-        flexDirection: "row",
-        borderBottomColor: colors.Seperator,
-        borderBottomWidth: 2,
-        alignItems: "center",
-        marginTop: 5,
-      }}
-    >
-      <View
+    loading == false && (
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate("ChatMessage", {
+            params: {
+              userID: userInfo.userID,
+              firstName: userInfo.firstName,
+              lastName: userInfo.lastName,
+              profileImage: userInfo.profileImage,
+              refresh: refresh,
+            },
+          })
+        }
         style={{
-          width: "20%",
-          justifyContent: "center",
+          backgroundColor: colors.backgroundColor,
+          height: 80,
+          flexDirection: "row",
+          borderBottomColor: colors.Seperator,
+          borderBottomWidth: 2,
           alignItems: "center",
+          marginTop: 5,
         }}
       >
         <View
           style={{
-            height: 50,
-            width: 50,
-            borderRadius: 25,
-            backgroundColor: "red",
-          }}
-        ></View>
-      </View>
-      <View style={{ width: "80%" }}>
-        <View
-          style={{
-            flexDirection: "row",
+            width: "20%",
+            justifyContent: "center",
             alignItems: "center",
-            justifyContent: "space-between",
-            marginLeft: 10,
           }}
         >
-          <Text
+          <View
             style={{
-              fontFamily: "Regular",
-              fontSize: 16,
-              color: colors.Text,
+              height: 50,
+              width: 50,
+              borderRadius: 25,
             }}
           >
-            Anu Dahal
-          </Text>
-          <Text
-            style={{
-              fontFamily: "Regular",
-              fontSize: 14,
-              color: colors.LightText,
-            }}
-          >
-            time
-          </Text>
+            <Image
+              style={{ height: "100%", width: "100%", borderRadius: 25 }}
+              source={{ uri: Api.BaseUrl + userInfo.profileImage }}
+            />
+          </View>
         </View>
-        <View style={{ marginLeft: 10 }}>
-          <Text
+        <View style={{ width: "80%" }}>
+          <View
             style={{
-              fontFamily: "Regular",
-              fontSize: 14,
-              color: colors.LightText,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginLeft: 10,
             }}
-            numberOfLines={1}
           >
-            Last Message
-          </Text>
+            <Text
+              style={{
+                fontFamily: "Regular",
+                fontSize: 16,
+                color: colors.Text,
+              }}
+            >
+              {userInfo.firstName} {userInfo.lastName}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Regular",
+                fontSize: 14,
+                color: colors.LightText,
+              }}
+            >
+              {messageTime()}
+            </Text>
+          </View>
+          <View style={{ marginLeft: 10 }}>
+            <Text
+              style={{
+                fontFamily: "Regular",
+                fontSize: 14,
+                color: colors.LightText,
+              }}
+              numberOfLines={1}
+            >
+              {props.lastMessage}
+            </Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    )
   );
 };
 

@@ -406,7 +406,19 @@ const Book = (props) => {
           <TouchableOpacity style={styles.footerButton} onPress={dialCall}>
             <Text style={styles.footerText}>Call</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton}>
+          <TouchableOpacity
+            style={styles.footerButton}
+            onPress={() =>
+              props.navigation.navigate("ChatMessage", {
+                params: {
+                  userID: userInfo.userID,
+                  firstName: userInfo.firstName,
+                  lastName: userInfo.lastName,
+                  profileImage: userInfo.profileImage,
+                },
+              })
+            }
+          >
             <Text style={styles.footerText}>Chat now</Text>
           </TouchableOpacity>
         </View>

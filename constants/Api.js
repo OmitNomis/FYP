@@ -1,4 +1,4 @@
-// const BaseUrl = "http://172.16.1.24:3000/";
+// const BaseUrl = "http://100.64.239.14:3000/";
 const BaseUrl = "http://192.168.1.65:3000/"; //home
 
 //login
@@ -24,6 +24,8 @@ const GetAllPosts = BaseUrl + "api/book/getPosts";
 const GetGenres = BaseUrl + "api/book/getGenres";
 const GetPostGenre = BaseUrl + "api/book/getPostGenre";
 const GetPostsByUser = BaseUrl + "api/book/getPostsByUser";
+const GetChat = BaseUrl + "api/chat/get";
+const GetChatList = BaseUrl + "api/chat/existingChat";
 
 export default {
   Login,
@@ -44,6 +46,8 @@ export default {
   GetGenres,
   GetPostGenre,
   BaseUrl,
+  GetChat,
   ChangePassword,
+  GetChatList,
   GetPostsByUser,
 };

@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { SafeAreaView, StyleSheet, StatusBar, Dimensions } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+  LogBox,
+} from "react-native";
 import * as Font from "expo-font";
 import Screens from "./navigation/Screens";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,6 +18,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [darkTheme, setDarkTheme] = useState(false);
   useEffect(async () => {
+    LogBox.ignoreAllLogs();
     var initialTheme = await DeviceStorage.getKey("DarkMode");
     setDarkTheme(initialTheme);
     loadFonts();
