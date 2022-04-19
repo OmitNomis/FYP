@@ -23,6 +23,7 @@ import Book from "../screens/Book";
 import EditBook from "../screens/EditBook";
 import EditProfile from "../screens/EditProfile";
 import themeContext from "../assets/theme/colorsContext";
+import ChatMessage from "../screens/ChatMessage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -188,6 +189,11 @@ function SignInStack(props) {
         options={headerShown}
       />
       <Stack.Screen name="Book" component={Book} options={headerShown} />
+      <Stack.Screen
+        name="ChatMessage"
+        component={ChatMessage}
+        options={noHeader}
+      />
     </Stack.Navigator>
   );
 }

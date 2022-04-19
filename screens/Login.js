@@ -237,7 +237,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     paddingBottom: 25,
   },
-  body: {},
   logoHolder: {
     marginVertical: 80,
     height: 145,
