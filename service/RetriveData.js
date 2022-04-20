@@ -59,6 +59,19 @@ const RetriveData = {
       });
     return response.data.data;
   },
+  GetPostComments: async function GetPostComments(id) {
+    var response = await (await request())
+      .get(api.GetPostComments + "/" + id)
+      .catch(function (error) {
+        console.log(error);
+        ToastMessage.Short("Error Loading Comments");
+      });
+    if (response.data.success == 1) {
+      return response.data.data;
+    } else {
+      return [];
+    }
+  },
   GetPostGenre: async function GetPostGenre(id) {
     var response = await (await request())
       .get(api.GetPostGenre + "/" + id)

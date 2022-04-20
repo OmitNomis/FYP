@@ -10,16 +10,23 @@ import {
   Image,
   Linking,
   ActivityIndicator,
+  TextInput,
+  KeyboardAvoidingView,
 } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import RetriveData from "../service/RetriveData";
 import ToastMessage from "../components/Toast";
 // import colors from "../assets/theme/colors";
 import api from "../constants/Api";
 import request from "../config/RequestManager";
 import themeContext from "../assets/theme/colorsContext";
+import ModalPopUp from "../components/Modal";
+import Icon from "react-native-vector-icons/Ionicons";
+import Api from "../constants/Api";
+import Comment from "../components/Comment";
 const Book = (props) => {
   const bookDetails = props.route.params.params.bookDetails;
+  const scrollView = useRef();
   const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState();
   const [postGenre, setPostGenre] = useState([]);
@@ -27,6 +34,9 @@ const Book = (props) => {
   const [myListing, setMyListing] = useState();
   const [sold, setSold] = useState(bookDetails.sold == 0 ? false : true);
   const [bookmark, setBookmark] = useState();
+  const [postComments, setPostComments] = useState([]);
+  const [comment, setComment] = useState("");
+  const [showComments, setShowComments] = useState(false);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -99,10 +109,44 @@ const Book = (props) => {
       } else {
         setBookmark(false);
       }
-      setLoading(false);
+      // setLoading(false);
+      getPostComments();
     } else {
       ToastMessage.Short("Error Loading bookmarks");
+      // setLoading(false);
+      getPostComments();
+    }
+  };
+  const getPostComments = async () => {
+    var response = await RetriveData.GetPostComments(bookDetails.postID);
+    if (response != undefined) {
+      setPostComments(response);
       setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
+  const submitComment = async () => {
+    var currentDate = new Date();
+    var data = {
+      Comment: comment,
+      CommenterId: myDetails.UserId,
+      PostId: bookDetails.postID,
+      CommentTime: currentDate,
+    };
+    var response = await (await request())
+      .post(Api.AddComment, data)
+      .catch(function (error) {
+        console.log(error);
+        ToastMessage.Short("Error Occured, Try again");
+      });
+    if (response != undefined) {
+      if (response.data.success == "1") {
+        getPostComments();
+        setComment("");
+      }
+    } else {
+      ToastMessage.Short("Error Occured While Making Comment");
     }
   };
 
@@ -215,6 +259,16 @@ const Book = (props) => {
     headerContainer: {
       paddingHorizontal: 20,
       marginTop: 15,
+    },
+    addBall: {
+      height: 50,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 32.5,
+      position: "absolute",
+      right: 10,
+      bottom: 60,
+      opacity: 0.7,
     },
     title: {
       fontFamily: "Bold",
@@ -341,13 +395,37 @@ const Book = (props) => {
             </View>
           </View>
         </View>
-        <View style={{ paddingHorizontal: 20, marginBottom: 15 }}>
-          <Text
-            style={{ fontFamily: "Bold", color: colors.Text, fontSize: 16 }}
+        <View
+          style={{
+            paddingHorizontal: 20,
+            marginBottom: 15,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <View>
+            <Text
+              style={{ fontFamily: "Bold", color: colors.Text, fontSize: 16 }}
+            >
+              Book Details
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setShowComments(!showComments);
+            }}
           >
-            Book Details
-          </Text>
+            <View>
+              <Text
+                style={{ fontFamily: "Bold", color: colors.Text, fontSize: 16 }}
+              >
+                See Comments
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
+
         <View style={styles.bookDetails}>
           <View style={styles.detail}>
             <Text style={styles.detailText}>Author: {bookDetails.author}</Text>
@@ -386,6 +464,127 @@ const Book = (props) => {
           )}
         </View>
       </ScrollView>
+      <ModalPopUp
+        full
+        visible={showComments}
+        onPress={() => {}}
+        onRequestClose={() => {
+          setShowComments(!showComments);
+        }}
+      >
+        <View style={{ flex: 1, backgroundColor: colors.Background }}>
+          <View
+            style={{
+              height: 70,
+              backgroundColor: colors.Seperator,
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingHorizontal: 50,
+              paddingRight: 30,
+              flexDirection: "row",
+            }}
+          >
+            <Text
+              style={{ fontFamily: "Bold", color: colors.Text, fontSize: 23 }}
+            >
+              Comments
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setShowComments(!showComments);
+              }}
+            >
+              <View>
+                <Icon style={{ color: colors.Text }} name="close" size={30} />
+              </View>
+            </TouchableOpacity>
+          </View>
+          <KeyboardAvoidingView style={{ flex: 1 }}>
+            {postComments.length == 0 ? (
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flex: 1,
+                  backgroundColor: colors.backgroundColor,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Regular",
+                    color: colors.Text,
+                    fontSize: 23,
+                  }}
+                >
+                  No Comments Yet...
+                </Text>
+              </View>
+            ) : (
+              <ScrollView
+                nestedScrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  paddingHorizontal: 20,
+                  justifyContent: "flex-end",
+                }}
+                onContentSizeChange={() =>
+                  scrollView.current.scrollToEnd({ animated: true })
+                }
+                ref={(ref) => (scrollView.current = ref)}
+              >
+                {postComments.map((comment) => {
+                  return (
+                    <Comment
+                      userId={comment.commenterID}
+                      comment={comment.comment}
+                      time={comment.commentTime}
+                    />
+                  );
+                })}
+              </ScrollView>
+            )}
+            <View
+              style={{
+                height: 80,
+                backgroundColor: colors.Seperator,
+                flexDirection: "row",
+                borderRadius: 20,
+                alignItems: "center",
+                marginTop: 20,
+              }}
+            >
+              <View style={{ width: "80%", paddingLeft: 20 }}>
+                <TextInput
+                  placeholder="Add a Comment..."
+                  value={comment}
+                  onChangeText={(text) => setComment(text)}
+                  placeholderTextColor={colors.LightText}
+                  onSubmitEditing={submitComment}
+                  style={{
+                    height: 60,
+                    fontSize: 16,
+                    fontFamily: "Regular",
+                    color: colors.Text,
+                  }}
+                  onFocus={() =>
+                    scrollView.current.scrollToEnd({ animated: true })
+                  }
+                />
+              </View>
+              <TouchableOpacity
+                onPress={submitComment}
+                style={{
+                  width: "20%",
+                  alignItems: "center",
+                }}
+              >
+                <Icon name={"send"} size={25} style={{ color: colors.Text }} />
+              </TouchableOpacity>
+            </View>
+          </KeyboardAvoidingView>
+        </View>
+      </ModalPopUp>
       {myListing == false ? (
         <View style={styles.footer}>
           {bookmark == true ? (

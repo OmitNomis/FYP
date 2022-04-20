@@ -26,10 +26,13 @@ const GetPostGenre = BaseUrl + "api/book/getPostGenre";
 const GetPostsByUser = BaseUrl + "api/book/getPostsByUser";
 const GetChat = BaseUrl + "api/chat/get";
 const GetChatList = BaseUrl + "api/chat/existingChat";
+const AddComment = BaseUrl + "api/book/addComment";
+const GetPostComments = BaseUrl + "api/book/getPostComments";
 
 export default {
   Login,
   Register,
+  AddComment,
   GetAllUsers,
   GetUserById,
   UpdateUser,
@@ -49,5 +52,6 @@ export default {
   GetChat,
   ChangePassword,
   GetChatList,
+  GetPostComments,
   GetPostsByUser,
 };
