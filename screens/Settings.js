@@ -154,7 +154,7 @@ const Settings = (props) => {
       <TouchableOpacity
         style={styles.redBtn}
         onPress={() => {
-          props.navigation.push("EditProfile");
+          props.navigation.navigate("EditProfile");
         }}
       >
         <Text style={styles.redBtnText}>Edit profile</Text>
@@ -173,21 +173,21 @@ const Settings = (props) => {
             title="Bookmarks"
             icon="heart-outline"
             onPress={() => {
-              props.navigation.push("Bookmarks");
+              props.navigation.navigate("Bookmarks");
             }}
           />
           <SettingsBtn
             title="My Listings"
             icon="reorder-three-outline"
             onPress={() => {
-              props.navigation.push("MyListings");
+              props.navigation.navigate("MyListings");
             }}
           />
           <SettingsBtn
             title="Sold Items"
             icon="reorder-two-outline"
             onPress={() => {
-              props.navigation.push("SoldItems");
+              props.navigation.navigate("SoldItems");
             }}
           />
         </View>
@@ -247,17 +247,17 @@ const Settings = (props) => {
           <SettingsBtn
             title="Contact Us"
             icon="call-outline"
-            onPress={() => props.navigation.push("ContactUs")}
+            onPress={() => props.navigation.navigate("ContactUs")}
           />
           <SettingsBtn
             title="Safety Tips"
             icon="reorder-three-outline"
-            onPress={() => props.navigation.push("SafetyTips")}
+            onPress={() => props.navigation.navigate("SafetyTips")}
           />
           <SettingsBtn
             title="About"
             icon="reorder-two-outline"
-            onPress={() => props.navigation.push("About")}
+            onPress={() => props.navigation.navigate("About")}
           />
         </View>
         <View style={styles.seperator}>
@@ -267,13 +267,14 @@ const Settings = (props) => {
           <SettingsBtn
             title="Change Password"
             icon="lock-closed-outline"
-            onPress={() => props.navigation.push("ChangePassword")}
+            onPress={() => props.navigation.navigate("ChangePassword")}
           />
           <SettingsBtn
             title="Log Out"
             icon="log-out-outline"
             onPress={() => {
               DeviceStorage.clearToken();
+              DeviceStorage.deleteKey("isLoggedIn");
               props.navigation.replace("SignInStack");
             }}
           />

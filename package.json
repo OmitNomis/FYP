@@ -28,6 +28,7 @@
     "react-native-event-listeners": "^1.0.7",
     "react-native-modal-dropdown": "^1.0.2",
     "react-native-multi-selectbox": "^1.5.0",
+    "react-native-multiple-select": "^0.5.7",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-select-dropdown": "^1.8.0",

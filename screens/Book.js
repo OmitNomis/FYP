@@ -397,11 +397,11 @@ const Book = (props) => {
         </View>
         <View
           style={{
-            paddingHorizontal: 20,
+            paddingHorizontal: 50,
             marginBottom: 15,
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
           }}
         >
           <View>

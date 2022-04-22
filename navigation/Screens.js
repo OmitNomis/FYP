@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -24,6 +24,7 @@ import EditBook from "../screens/EditBook";
 import EditProfile from "../screens/EditProfile";
 import themeContext from "../assets/theme/colorsContext";
 import ChatMessage from "../screens/ChatMessage";
+import DeviceStorage from "../config/DeviceStorage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -147,7 +148,21 @@ function ScreenStack(props) {
 
 function SignInStack(props) {
   const colors = useContext(themeContext);
+  const [loading, setLoading] = useState(true);
+  const [initialRouteName, setInitialRouteName] = useState("");
 
+  const checkLoggedIn = async (isLoggedIn) => {
+    if (isLoggedIn) {
+      setInitialRouteName("HomeStack");
+    } else {
+      setInitialRouteName("Login");
+    }
+    setLoading(false);
+  };
+  useEffect(async () => {
+    var isLoggedIn = await DeviceStorage.getKey("isLoggedIn");
+    checkLoggedIn(isLoggedIn);
+  }, []);
   const noHeader = { headerShown: false };
   const headerShown = {
     headerStyle: {
@@ -162,39 +177,63 @@ function SignInStack(props) {
       fontSize: 24,
     },
   };
+
+  const renderScreens = () => {
+    return (
+      <>
+        <Stack.Screen name="Login" component={Login} options={noHeader} />
+        <Stack.Screen name="Register" component={Register} options={noHeader} />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={noHeader}
+        />
+        <Stack.Screen
+          name="ConfirmationMail"
+          component={ConfirmationMail}
+          options={noHeader}
+        />
+        <Stack.Screen
+          name="HomeStack"
+          component={HomeStack}
+          options={noHeader}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={ScreenStack}
+          options={noHeader}
+        />
+        <Stack.Screen
+          name="AddPost"
+          component={AddBook}
+          options={headerShown}
+        />
+        <Stack.Screen
+          name="EditBook"
+          component={EditBook}
+          options={headerShown}
+        />
+        <Stack.Screen name="Book" component={Book} options={headerShown} />
+        <Stack.Screen
+          name="ChatMessage"
+          component={ChatMessage}
+          options={noHeader}
+        />
+      </>
+    );
+  };
+
   return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={Login} options={noHeader} />
-      <Stack.Screen name="Register" component={Register} options={noHeader} />
-      <Stack.Screen
-        name="ForgotPassword"
-        component={ForgotPassword}
-        options={noHeader}
-      />
-      <Stack.Screen
-        name="ConfirmationMail"
-        component={ConfirmationMail}
-        options={noHeader}
-      />
-      <Stack.Screen name="HomeStack" component={HomeStack} options={noHeader} />
-      <Stack.Screen
-        name="Settings"
-        component={ScreenStack}
-        options={noHeader}
-      />
-      <Stack.Screen name="AddPost" component={AddBook} options={headerShown} />
-      <Stack.Screen
-        name="EditBook"
-        component={EditBook}
-        options={headerShown}
-      />
-      <Stack.Screen name="Book" component={Book} options={headerShown} />
-      <Stack.Screen
-        name="ChatMessage"
-        component={ChatMessage}
-        options={noHeader}
-      />
-    </Stack.Navigator>
+    loading == false &&
+    (initialRouteName === "Login" ? (
+      <Stack.Navigator initialRouteName="Login">
+        {renderScreens()}
+      </Stack.Navigator>
+    ) : (
+      <Stack.Navigator initialRouteName="HomeStack">
+        {renderScreens()}
+      </Stack.Navigator>
+    ))
   );
 }
 

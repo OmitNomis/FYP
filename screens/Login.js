@@ -73,6 +73,7 @@ const Login = (props) => {
         };
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
         await DeviceStorage.saveKey("token", response.data.token);
+        await DeviceStorage.saveKey("isLoggedIn", "true");
         props.navigation.replace("HomeStack");
       } else {
         ToastMessage.Short(response.data.data);

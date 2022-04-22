@@ -19,7 +19,8 @@ import api from "../constants/Api";
 import ToastMessage from "../components/Toast";
 import request from "../config/RequestManager";
 import Uuid from "react-native-uuid";
-import SelectBox from "react-native-multi-selectbox";
+// import SelectBox from "react-native-multi-selectbox";
+import MultiSelect from "react-native-multiple-select";
 import { xorBy } from "lodash";
 import * as ImagePicker from "expo-image-picker";
 import themeContext from "../assets/theme/colorsContext";
@@ -61,7 +62,7 @@ const AddBook = (props) => {
       var arr = response.map((list) => {
         return {
           id: list.genreID,
-          item: list.genreName,
+          name: list.genreName,
         };
       });
       setGenreList(arr);
@@ -95,11 +96,6 @@ const AddBook = (props) => {
   const [image, setImage] = useState();
   const [errorMessage, setErrorMessage] = useState(false);
 
-  const selectGenreHandler = () => {
-    return (item) => {
-      setSelectedGenre(xorBy(selectedGenre, [item], "id"));
-    };
-  };
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -167,12 +163,10 @@ const AddBook = (props) => {
       .catch((err) => {
         console.log("err" + err);
       });
+    console.log(selectedGenre);
   };
 
   const post = async (imagePath) => {
-    var genreId = [];
-    genreId = selectedGenre.map((item) => item.id);
-
     var tradeId;
     if (trade == true) {
       tradeId = 1;
@@ -190,7 +184,7 @@ const AddBook = (props) => {
       Location: location,
       Trade: tradeId,
       TradeWith: tradeWith,
-      GenreId: genreId,
+      GenreId: selectedGenre,
       Sold: 0,
       UserId: userInfo.UserId,
       Image: imagePath,
@@ -295,7 +289,7 @@ const AddBook = (props) => {
             value={author}
             onChangeText={(text) => setAuthor(text)}
           />
-          <SelectBox
+          {/* <SelectBox
             label={""}
             options={genreList}
             selectedValues={selectedGenre}
@@ -317,6 +311,56 @@ const AddBook = (props) => {
             labelStyle={{
               fontSize: 0,
             }}
+          /> */}
+          <MultiSelect
+            // hideTags
+            items={genreList}
+            uniqueKey="id"
+            onSelectedItemsChange={(selected) => setSelectedGenre(selected)}
+            selectedItems={selectedGenre}
+            selectText="Select Genre"
+            searchInputPlaceholderText="Search Genre..."
+            altFontFamily="Regular"
+            selectedItemTextColor={colors.Primary}
+            selectedItemIconColor={colors.Primary}
+            itemTextColor={colors.Text}
+            itemFontFamily="Regular"
+            selectedItemFontFamily="Regular"
+            displayKey="name"
+            submitButtonColor={colors.Primary}
+            submitButtonText="Submit"
+            tagRemoveIconColor={colors.Purple}
+            tagBorderColor={colors.Purple}
+            tagTextColor={colors.Text}
+            styleDropdownMenu={{
+              backgroundColor: colors.Seperator,
+              borderRadius: 8,
+              paddingLeft: 20,
+              height: 50,
+              marginBottom: 8,
+              alignItems: "center",
+              marginTop: 5,
+              color: colors.Text,
+            }}
+            styleDropdownMenuSubsection={{
+              height: "100%",
+              backgroundColor: colors.Seperator,
+              borderRadius: 8,
+              borderBottomWidth: 0,
+            }}
+            styleInputGroup={{
+              backgroundColor: colors.Seperator,
+              height: 50,
+              marginTop: 5,
+              borderRadius: 8,
+            }}
+            styleItemsContainer={{
+              maxHeight: 200,
+              borderRadius: 8,
+              backgroundColor: colors.Seperator,
+              marginTop: 2,
+            }}
+            textColor={colors.Text}
           />
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}

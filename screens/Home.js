@@ -241,7 +241,7 @@ const Home = (props) => {
       <TouchableOpacity
         style={[styles.addBall, { backgroundColor: colors.Primary }]}
         onPress={() => {
-          props.navigation.push("AddPost");
+          props.navigation.navigate("AddPost");
         }}
       >
         <Icon name="add-outline" size={35} style={{ color: colors.White }} />
