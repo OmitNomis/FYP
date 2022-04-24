@@ -211,7 +211,10 @@ const Home = (props) => {
           <View>
             <Text style={heading2}>Genre</Text>
           </View>
-          <TouchableOpacity style={redBtn}>
+          <TouchableOpacity
+            style={redBtn}
+            onPress={() => props.navigation.navigate("AllGenre")}
+          >
             <Text style={redBtnText}>See all genres</Text>
           </TouchableOpacity>
         </View>
@@ -237,7 +240,14 @@ const Home = (props) => {
           <View>
             <Text style={heading2}>Recent posts</Text>
           </View>
-          <TouchableOpacity style={redBtn}>
+          <TouchableOpacity
+            style={redBtn}
+            onPress={() =>
+              props.navigation.navigate("SearchScreen", {
+                params: { screenName: "Recent Posts", filter: false },
+              })
+            }
+          >
             <Text style={redBtnText}>See all posts</Text>
           </TouchableOpacity>
         </View>

@@ -214,6 +214,7 @@ const SearchScreen = (props) => {
             {genreList.map((item, index) => {
               return (
                 <TouchableOpacity
+                  key={index}
                   onPress={() => filter(item.genreID)}
                   style={{
                     width: "100%",
