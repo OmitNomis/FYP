@@ -14,41 +14,26 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import RetriveData from "../service/RetriveData";
 import ItemWide from "../components/ItemWide";
 import themeContext from "../assets/theme/colorsContext";
-const SoldItems = (props) => {
-  const [loading, setLoading] = useState(true);
-  const [bookmark, setBookmark] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [filtered, setFiltered] = useState([]);
-  const [search, setSearch] = useState("");
+
+const GenreScreen = (props) => {
   const colors = useContext(themeContext);
+  const [loading, setLoading] = useState(true);
+  const [postList, setPostList] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     props.navigation.setOptions({
-      title: "Sold Books",
+      title: props.route.params.params.genre.genreName,
     });
-    getMyDetails();
+    getPost();
   }, []);
-  const updateSearch = (search) => {
-    setSearch(search);
-    var filteredList = bookmark.filter((item) =>
-      item.title.toLowerCase().includes(search.toLowerCase())
+
+  const getPost = async (response) => {
+    var response = await RetriveData.GetPostByGenre(
+      props.route.params.params.genre.genreID
     );
-    setFiltered(filteredList);
-  };
-  const getMyDetails = async () => {
-    var response = await RetriveData.GetCustomerInfo();
     if (response != undefined) {
-      getMyBookmarks(response);
-    } else {
-      ToastMessage.Short("Error Loading details");
-      getMyBookmarks(response);
-    }
-  };
-  const getMyBookmarks = async (response) => {
-    var response = await RetriveData.GetSoldList(response.UserId);
-    if (response != undefined) {
-      setBookmark(response);
-      setFiltered(response);
+      setPostList(response);
       setLoading(false);
     } else {
       ToastMessage.Short("Error Loading Posts");
@@ -60,7 +45,7 @@ const SoldItems = (props) => {
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    getMyDetails();
+    getPost();
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
@@ -85,10 +70,6 @@ const SoldItems = (props) => {
           <TextInput
             placeholderTextColor={colors.LightText}
             placeholder="Search..."
-            value={search}
-            onChangeText={(text) => {
-              updateSearch(text);
-            }}
             style={{
               color: colors.Text,
               width: "80%",
@@ -99,15 +80,11 @@ const SoldItems = (props) => {
           />
         </View>
       </View>
-      {filtered.length == 0 ? (
+      {postList.length == 0 ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text
-            style={{ fontFamily: "Regular", fontSize: 23, color: colors.Text }}
-          >
-            Books not found!
-          </Text>
+          <Text>No Books Listed Yet!</Text>
         </View>
       ) : (
         <FlatList
@@ -115,37 +92,23 @@ const SoldItems = (props) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          data={filtered}
+          data={postList}
           renderItem={renderItem}
           keyExtractor={(item) => item.postID}
         />
       )}
     </View>
   ) : (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colors.Background,
-      }}
-    >
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator color={colors.Primary} size="large" />
-      <Text
-        style={{
-          fontFamily: "Regular",
-          fontSize: 16,
-          marginTop: 20,
-          color: colors.Text,
-        }}
-      >
+      <Text style={{ fontFamily: "Regular", fontSize: 16, marginTop: 20 }}>
         Please Wait...
       </Text>
     </View>
   );
 };
 
-export default SoldItems;
+export default GenreScreen;
 
 const styles = StyleSheet.create({
   searchSection: {

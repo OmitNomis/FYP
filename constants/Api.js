@@ -28,6 +28,7 @@ const GetChat = BaseUrl + "api/chat/get";
 const GetChatList = BaseUrl + "api/chat/existingChat";
 const AddComment = BaseUrl + "api/book/addComment";
 const GetPostComments = BaseUrl + "api/book/getPostComments";
+const GetPostByGenre = BaseUrl + "api/book/getPostByGenre";
 
 export default {
   Login,
@@ -40,6 +41,7 @@ export default {
   AddPost,
   DeletePost,
   SoldPost,
+  GetPostByGenre,
   BookmarkPost,
   DeleteBookmark,
   GetBookmarks,

@@ -172,14 +172,14 @@ const Home = (props) => {
         </View>
         <View style={styles.searchDiv}>
           <TouchableOpacity
-            style={[styles.searchBox, { backgroundColor: colors.White }]}
+            style={[styles.searchBox, { backgroundColor: colors.Seperator }]}
           >
-            <Icon name="search" size={25} />
+            <Icon name="search" size={25} style={{ color: colors.Text }} />
             <Text
               style={{
                 fontFamily: "Regular",
                 fontSize: 15,
-                color: "#a0a0a0",
+                color: colors.Text,
                 marginLeft: 10,
               }}
             >
@@ -188,9 +188,13 @@ const Home = (props) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.filterIcon, { backgroundColor: colors.White }]}
+            style={[styles.filterIcon, { backgroundColor: colors.Seperator }]}
           >
-            <Icon name="ios-funnel-outline" size={30} />
+            <Icon
+              name="ios-funnel-outline"
+              size={30}
+              style={{ color: colors.Text }}
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.subHeading}>
@@ -212,8 +216,10 @@ const Home = (props) => {
             justifyContent: "space-evenly",
           }}
         >
-          {genreList.slice(0, 10).map((item) => {
-            return <Genre item={item} />;
+          {genreList.slice(0, 10).map((item, index) => {
+            return (
+              <Genre key={index} item={item} navigation={props.navigation} />
+            );
           })}
         </ScrollView>
 
@@ -232,8 +238,14 @@ const Home = (props) => {
             showsHorizontalScrollIndicator={false}
             overScrollMode="never"
           >
-            {postList.slice(0, 10).map((item) => {
-              return <ItemSmall item={item} navigation={props.navigation} />;
+            {postList.slice(0, 10).map((item, index) => {
+              return (
+                <ItemSmall
+                  key={index}
+                  item={item}
+                  navigation={props.navigation}
+                />
+              );
             })}
           </ScrollView>
         </View>

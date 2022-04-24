@@ -72,6 +72,19 @@ const RetriveData = {
       return [];
     }
   },
+  GetPostByGenre: async function GetPostByGenre(id) {
+    var response = await (await request())
+      .get(api.GetPostByGenre + "/" + id)
+      .catch(function (error) {
+        console.log(error);
+        ToastMessage.Short("Error Loading Posts");
+      });
+    if (response.data.success == 1) {
+      return response.data.data;
+    } else {
+      return [];
+    }
+  },
   GetPostGenre: async function GetPostGenre(id) {
     var response = await (await request())
       .get(api.GetPostGenre + "/" + id)

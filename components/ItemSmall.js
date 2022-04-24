@@ -17,7 +17,6 @@ const ItemSmall = (props) => {
     imageContainer: {
       height: 150,
       width: 130,
-      backgroundColor: "red",
       borderRadius: 12,
     },
     image: {

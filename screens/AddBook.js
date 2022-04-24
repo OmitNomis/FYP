@@ -245,12 +245,13 @@ const AddBook = (props) => {
     >
       <ScrollView
         nestedScrollEnabled
-        style={{
+        contentContainerStyle={{
+          paddingBottom: 30,
+          flexGrow: 1,
           paddingHorizontal: 30,
           paddingTop: 20,
           backgroundColor: colors.Background,
         }}
-        contentContainerStyle={{ paddingBottom: 30, flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
@@ -289,29 +290,6 @@ const AddBook = (props) => {
             value={author}
             onChangeText={(text) => setAuthor(text)}
           />
-          {/* <SelectBox
-            label={""}
-            options={genreList}
-            selectedValues={selectedGenre}
-            onMultiSelect={selectGenreHandler()}
-            onTapClose={selectGenreHandler()}
-            inputPlaceholder={"Select Genre"}
-            isMulti
-            containerStyle={{
-              backgroundColor: colors.Seperator,
-              borderRadius: 8,
-              paddingLeft: 20,
-              height: 50,
-              paddingTop: 15,
-              marginBottom: 8,
-              alignItems: "center",
-              borderBottomWidth: 0,
-              marginTop: 5,
-            }}
-            labelStyle={{
-              fontSize: 0,
-            }}
-          /> */}
           <MultiSelect
             // hideTags
             items={genreList}
@@ -356,9 +334,7 @@ const AddBook = (props) => {
             }}
             styleItemsContainer={{
               maxHeight: 200,
-              borderRadius: 8,
               backgroundColor: colors.Seperator,
-              marginTop: 2,
             }}
             textColor={colors.Text}
           />
@@ -382,13 +358,16 @@ const AddBook = (props) => {
                 paddingLeft: 20,
                 paddingRight: 10,
               }}
+              containerStyle={{
+                backgroundColor: colors.Seperator,
+              }}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
               iconStyle={styles.iconStyle}
               placeholder="Price Type"
               data={priceType}
-              maxHeight={300}
+              maxHeight={130}
               labelField="label"
               valueField="value"
               value={priceTypeValue}
@@ -413,13 +392,16 @@ const AddBook = (props) => {
                 paddingLeft: 20,
                 paddingRight: 10,
               }}
+              containerStyle={{
+                backgroundColor: colors.Seperator,
+              }}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
               iconStyle={styles.iconStyle}
               placeholder="Delivery"
               data={delivery}
-              maxHeight={300}
+              maxHeight={130}
               labelField="label"
               valueField="value"
               value={deliveryValue}
@@ -440,13 +422,16 @@ const AddBook = (props) => {
                 paddingLeft: 20,
                 paddingRight: 10,
               }}
+              containerStyle={{
+                backgroundColor: colors.Seperator,
+              }}
               placeholderStyle={styles.placeholderStyle}
               selectedTextStyle={styles.selectedTextStyle}
               inputSearchStyle={styles.inputSearchStyle}
               iconStyle={styles.iconStyle}
               placeholder="Condition"
               data={condition}
-              maxHeight={300}
+              maxHeight={180}
               labelField="label"
               valueField="value"
               value={conditionValue}

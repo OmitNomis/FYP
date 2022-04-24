@@ -35,7 +35,6 @@ const EditProfile = (props) => {
   const [image, setImage] = useState("");
   const [myInfo, setMyInfo] = useState();
   const [imageUpdated, setImageUpdated] = useState(false);
-
   useEffect(async () => {
     getUserInfo();
   }, []);
@@ -194,7 +193,7 @@ const EditProfile = (props) => {
   const styles = StyleSheet.create({
     container: {
       paddingHorizontal: 30,
-      backgroundColor: "#fff",
+      backgroundColor: colors.Background,
       flex: 1,
     },
     buttonDiv: {

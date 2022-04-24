@@ -16,7 +16,6 @@ import themeContext from "../assets/theme/colorsContext";
 import RetriveData from "../service/RetriveData";
 import ItemWide from "../components/ItemWide";
 import ToastMessage from "../components/Toast";
-import { Dimensions } from "react-native-web";
 import Api from "../constants/Api";
 const Profile = (props) => {
   const colors = useContext(themeContext);
@@ -198,6 +197,9 @@ const Profile = (props) => {
             </Text>
           </View>
           <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate("Settings", { screen: "MyListings" })
+            }
             style={[styles.redBtn, { backgroundColor: colors.Primary }]}
           >
             <Text style={[styles.redBtnText, { color: colors.White }]}>

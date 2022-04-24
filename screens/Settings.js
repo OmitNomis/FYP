@@ -184,7 +184,7 @@ const Settings = (props) => {
             }}
           />
           <SettingsBtn
-            title="Sold Items"
+            title="Sold Books"
             icon="reorder-two-outline"
             onPress={() => {
               props.navigation.navigate("SoldItems");

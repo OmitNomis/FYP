@@ -27,7 +27,6 @@ const ModalPopUp = ({
       style={{
         justifyContent: "flex-end",
         margin: 0,
-        backgroundColor: "red",
       }}
       onShow={onShow}
     >

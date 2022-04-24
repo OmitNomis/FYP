@@ -60,16 +60,17 @@ const Login = (props) => {
       });
     if (response != undefined) {
       if (response.data.success == 1) {
+        var info = response.data.userData[0];
         var userInfo = {
-          UserId: response.data.userData.userID,
-          Phone: response.data.userData.phone,
-          City: response.data.userData.city,
-          CountryId: response.data.userData.countryId,
-          Email: response.data.userData.email,
-          FirstName: response.data.userData.firstName,
-          LastName: response.data.userData.lastName,
-          StartDate: response.data.userData.startDate,
-          ProfileImage: response.data.userData.profileImage,
+          UserId: info.userID,
+          Phone: info.phone,
+          City: info.city,
+          CountryId: info.countryId,
+          Email: info.email,
+          FirstName: info.firstName,
+          LastName: info.lastName,
+          StartDate: info.startDate,
+          ProfileImage: info.profileImage,
         };
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
         await DeviceStorage.saveKey("token", response.data.token);

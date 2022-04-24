@@ -34,7 +34,7 @@ const Message = (props) => {
     <View
       style={[
         {
-          backgroundColor: colors.Purple,
+          backgroundColor: colors.LightPurple,
           maxWidth: "80%",
           alignSelf: "flex-end",
           flexDirection: "row",
@@ -73,7 +73,7 @@ const Message = (props) => {
         <Text
           style={[
             {
-              color: "lightgray",
+              color: colors.LightText,
               alignSelf: "flex-end",
               fontSize: 10,
             },

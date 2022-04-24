@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useContext } from "react";
 // import colors from "../assets/theme/colors";
 import themeContext from "../assets/theme/colorsContext";
@@ -24,9 +24,17 @@ const Genre = (props) => {
     },
   });
   return (
-    <View style={styles.container} key={props.item.genreID}>
+    <TouchableOpacity
+      style={styles.container}
+      key={props.item.genreID}
+      onPress={() =>
+        props.navigation.navigate("GenreScreen", {
+          params: { genre: props.item },
+        })
+      }
+    >
       <Text style={styles.text}>{props.item.genreName}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

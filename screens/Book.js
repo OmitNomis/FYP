@@ -251,7 +251,6 @@ const Book = (props) => {
     },
     imageContainer: {
       height: 250,
-      backgroundColor: "red",
       margin: 10,
       marginBottom: 0,
       borderRadius: 10,
@@ -307,6 +306,7 @@ const Book = (props) => {
       justifyContent: "space-evenly",
       paddingHorizontal: 30,
       marginTop: 10,
+      flexWrap: "wrap",
     },
     bookDetails: {
       borderColor: colors.Seperator,

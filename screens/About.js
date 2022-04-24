@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 // import colors from "../assets/theme/colors";
 import themeContext from "../assets/theme/colorsContext";
+import RetriveData from "../service/RetriveData";
 
 const About = (props) => {
   const colors = useContext(themeContext);
@@ -9,7 +10,13 @@ const About = (props) => {
     props.navigation.setOptions({
       title: "About Us",
     });
+    getMyDetails();
   }, []);
+
+  const getMyDetails = async () => {
+    var response = await RetriveData.GetCustomerInfo();
+    console.log(response);
+  };
   return (
     <View style={{ flex: 1, backgroundColor: colors.Background }}>
       <ScrollView

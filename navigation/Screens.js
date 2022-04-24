@@ -25,6 +25,7 @@ import EditProfile from "../screens/EditProfile";
 import themeContext from "../assets/theme/colorsContext";
 import ChatMessage from "../screens/ChatMessage";
 import DeviceStorage from "../config/DeviceStorage";
+import GenreScreen from "../screens/GenreScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -214,6 +215,11 @@ function SignInStack(props) {
           options={headerShown}
         />
         <Stack.Screen name="Book" component={Book} options={headerShown} />
+        <Stack.Screen
+          name="GenreScreen"
+          component={GenreScreen}
+          options={headerShown}
+        />
         <Stack.Screen
           name="ChatMessage"
           component={ChatMessage}

@@ -14,12 +14,13 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import RetriveData from "../service/RetriveData";
 import ItemWide from "../components/ItemWide";
 import themeContext from "../assets/theme/colorsContext";
-
 const MyListings = (props) => {
-  const colors = useContext(themeContext);
   const [loading, setLoading] = useState(true);
   const [bookmark, setBookmark] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [filtered, setFiltered] = useState([]);
+  const [search, setSearch] = useState("");
+  const colors = useContext(themeContext);
 
   useEffect(() => {
     props.navigation.setOptions({
@@ -27,7 +28,13 @@ const MyListings = (props) => {
     });
     getMyDetails();
   }, []);
-
+  const updateSearch = (search) => {
+    setSearch(search);
+    var filteredList = bookmark.filter((item) =>
+      item.title.toLowerCase().includes(search.toLowerCase())
+    );
+    setFiltered(filteredList);
+  };
   const getMyDetails = async () => {
     var response = await RetriveData.GetCustomerInfo();
     if (response != undefined) {
@@ -41,9 +48,10 @@ const MyListings = (props) => {
     var response = await RetriveData.GetPostsByUser(response.UserId);
     if (response != undefined) {
       setBookmark(response);
+      setFiltered(response);
       setLoading(false);
     } else {
-      ToastMessage.Short("Error Loading bookmarks");
+      ToastMessage.Short("Error Loading Posts");
       setLoading(false);
     }
   };
@@ -66,15 +74,21 @@ const MyListings = (props) => {
         flex: 1,
         backgroundColor: colors.Background,
         paddingHorizontal: 30,
+        paddingVertical: 30,
       }}
     >
       <View
         style={[styles.searchSection, { backgroundColor: colors.Background }]}
       >
-        <View style={[styles.searchBar, { backgroundColor: colors.White }]}>
-          <Ionicons name="search" size={25} />
+        <View style={[styles.searchBar, { backgroundColor: colors.Seperator }]}>
+          <Ionicons name="search" size={25} style={{ color: colors.Text }} />
           <TextInput
+            placeholderTextColor={colors.LightText}
             placeholder="Search..."
+            value={search}
+            onChangeText={(text) => {
+              updateSearch(text);
+            }}
             style={{
               color: colors.Text,
               width: "80%",
@@ -85,11 +99,15 @@ const MyListings = (props) => {
           />
         </View>
       </View>
-      {bookmark.length == 0 ? (
+      {filtered.length == 0 ? (
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text>No Books Listed Yet!</Text>
+          <Text
+            style={{ fontFamily: "Regular", fontSize: 23, color: colors.Text }}
+          >
+            Books not found!
+          </Text>
         </View>
       ) : (
         <FlatList
@@ -97,16 +115,30 @@ const MyListings = (props) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          data={bookmark}
+          data={filtered}
           renderItem={renderItem}
           keyExtractor={(item) => item.postID}
         />
       )}
     </View>
   ) : (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: colors.Background,
+      }}
+    >
       <ActivityIndicator color={colors.Primary} size="large" />
-      <Text style={{ fontFamily: "Regular", fontSize: 16, marginTop: 20 }}>
+      <Text
+        style={{
+          fontFamily: "Regular",
+          fontSize: 16,
+          marginTop: 20,
+          color: colors.Text,
+        }}
+      >
         Please Wait...
       </Text>
     </View>
@@ -117,9 +149,9 @@ export default MyListings;
 
 const styles = StyleSheet.create({
   searchSection: {
-    height: 100,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 30,
   },
   searchBar: {
     height: 45,
