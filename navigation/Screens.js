@@ -26,6 +26,7 @@ import themeContext from "../assets/theme/colorsContext";
 import ChatMessage from "../screens/ChatMessage";
 import DeviceStorage from "../config/DeviceStorage";
 import GenreScreen from "../screens/GenreScreen";
+import SearchScreen from "../screens/SearchScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -218,6 +219,11 @@ function SignInStack(props) {
         <Stack.Screen
           name="GenreScreen"
           component={GenreScreen}
+          options={headerShown}
+        />
+        <Stack.Screen
+          name="SearchScreen"
+          component={SearchScreen}
           options={headerShown}
         />
         <Stack.Screen

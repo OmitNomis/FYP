@@ -361,9 +361,9 @@ const Book = (props) => {
           <Text style={styles.price}>Rs. {bookDetails.price}</Text>
         </View>
         <View style={styles.genreList}>
-          {postGenre.map((item) => {
+          {postGenre.map((item, index) => {
             return (
-              <View style={styles.genre}>
+              <View key={index} style={styles.genre}>
                 <Text
                   style={{
                     color: colors.LightText,
@@ -536,6 +536,7 @@ const Book = (props) => {
                 {postComments.map((comment) => {
                   return (
                     <Comment
+                      key={comment.commentID}
                       userId={comment.commenterID}
                       comment={comment.comment}
                       time={comment.commentTime}

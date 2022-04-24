@@ -172,6 +172,11 @@ const Home = (props) => {
         </View>
         <View style={styles.searchDiv}>
           <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate("SearchScreen", {
+                params: { screenName: "Search All Books", filter: false },
+              })
+            }
             style={[styles.searchBox, { backgroundColor: colors.Seperator }]}
           >
             <Icon name="search" size={25} style={{ color: colors.Text }} />
@@ -188,6 +193,11 @@ const Home = (props) => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate("SearchScreen", {
+                params: { screenName: "Search All Books", filter: true },
+              })
+            }
             style={[styles.filterIcon, { backgroundColor: colors.Seperator }]}
           >
             <Icon
