@@ -27,7 +27,7 @@ const Message = (props) => {
   };
   const messageTime = () => {
     var date = new Date(props.time);
-    let time = date.getHours() + ":" + date.getMinutes();
+    let time = date.getHours() + ":" + ("0" + date.getMinutes()).slice(-2);
     return time;
   };
   return (
