@@ -134,7 +134,6 @@ const Settings = (props) => {
             height: 130,
             width: 130,
             borderRadius: 65,
-            backgroundColor: colors.Primary,
           }}
         >
           <Image

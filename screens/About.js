@@ -2,7 +2,6 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 // import colors from "../assets/theme/colors";
 import themeContext from "../assets/theme/colorsContext";
-import RetriveData from "../service/RetriveData";
 
 const About = (props) => {
   const colors = useContext(themeContext);
@@ -10,21 +9,23 @@ const About = (props) => {
     props.navigation.setOptions({
       title: "About Us",
     });
-    getMyDetails();
   }, []);
-
-  const getMyDetails = async () => {
-    var response = await RetriveData.GetCustomerInfo();
-    console.log(response);
+  const text = {
+    textAlign: "justify",
+    fontFamily: "Regular",
+    fontSize: 14,
+    color: colors.Text,
+    marginBottom: 10,
   };
   return (
     <View style={{ flex: 1, backgroundColor: colors.Background }}>
       <ScrollView
         nestedScrollEnabled
-        style={{
+        contentContainerStyle={{
           paddingHorizontal: 30,
           marginTop: 20,
           backgroundColor: colors.Background,
+          flexGrow: 1,
         }}
       >
         <View>
@@ -34,17 +35,10 @@ const About = (props) => {
               fontFamily: "Regular",
               fontSize: 16,
               color: colors.Text,
+              marginBottom: 10,
             }}
           >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            Application Name: Pick a Book
           </Text>
           <Text
             style={{
@@ -52,17 +46,37 @@ const About = (props) => {
               fontFamily: "Regular",
               fontSize: 16,
               color: colors.Text,
+              marginBottom: 10,
             }}
           >
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            Version: 1.0
+          </Text>
+          <Text
+            style={{
+              textAlign: "justify",
+              fontFamily: "Regular",
+              fontSize: 16,
+              color: colors.Text,
+              marginBottom: 10,
+            }}
+          >
+            About Application:
+          </Text>
+          <Text
+            style={{
+              textAlign: "justify",
+              fontFamily: "Regular",
+              fontSize: 16,
+              color: colors.Text,
+              marginBottom: 10,
+            }}
+          >
+            Pick A Book provides an online platform which helps buyers {"&"}{" "}
+            sellers to meet with each other. This application is developed
+            solely for the purpose of buying and selling second-hand or used
+            books, as new Books can get very expensive, this application hopes
+            to solve that problem by introducing features such as selling and
+            buying books as well as trading used books with others.
           </Text>
         </View>
       </ScrollView>
