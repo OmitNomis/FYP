@@ -330,19 +330,25 @@ const Book = (props) => {
     },
     footer: {
       flexDirection: "row",
-      height: 50,
+      height: 60,
+      alignItems: "center",
+      backgroundColor: colors.Seperator,
     },
     footerButton: {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      height: "100%",
-      borderWidth: 0.3,
+      borderRightColor: colors.Purple,
+      borderRightWidth: 0.3,
+      height: "80%",
       backgroundColor: colors.Seperator,
     },
     footerText: {
       fontFamily: "Regular",
-      fontSize: 14,
+      fontSize: 12,
+      color: colors.Text,
+    },
+    iconStyles: {
       color: colors.Text,
     },
   });
@@ -593,17 +599,20 @@ const Book = (props) => {
               style={styles.footerButton}
               onPress={bookmarkHandler}
             >
-              <Text style={styles.footerText}>Remove Bookmark</Text>
+              <Icon name="heart" style={{ color: colors.Primary }} size={20} />
+              <Text style={styles.footerText}>Bookmark</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.footerButton}
               onPress={bookmarkHandler}
             >
-              <Text style={styles.footerText}>Add Bookmark</Text>
+              <Icon name="heart-outline" style={styles.iconStyles} size={20} />
+              <Text style={styles.footerText}>Bookmark</Text>
             </TouchableOpacity>
           )}
           <TouchableOpacity style={styles.footerButton} onPress={dialCall}>
+            <Icon name="call-outline" style={styles.iconStyles} size={20} />
             <Text style={styles.footerText}>Call</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -619,6 +628,11 @@ const Book = (props) => {
               })
             }
           >
+            <Icon
+              name="chatbox-ellipses-outline"
+              style={styles.iconStyles}
+              size={20}
+            />
             <Text style={styles.footerText}>Chat now</Text>
           </TouchableOpacity>
         </View>
@@ -640,6 +654,7 @@ const Book = (props) => {
               );
             }}
           >
+            <Icon name="trash" size={20} style={styles.iconStyles} />
             <Text style={styles.footerText}>Delete Post</Text>
           </TouchableOpacity>
           {sold == false ? (
@@ -659,10 +674,20 @@ const Book = (props) => {
                 );
               }}
             >
+              <Icon
+                name="checkmark-circle-outline"
+                size={20}
+                style={styles.iconStyles}
+              />
               <Text style={styles.footerText}>Mark as Sold</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={styles.footerButton} disabled>
+              <Icon
+                name="checkmark-circle"
+                size={20}
+                style={styles.iconStyles}
+              />
               <Text style={styles.footerText}>Book Sold</Text>
             </TouchableOpacity>
           )}

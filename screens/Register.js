@@ -13,6 +13,7 @@ import request from "../config/RequestManager";
 // import colors from "../assets/theme/colors";
 import themeContext from "../assets/theme/colorsContext";
 import ToastMessage from "../components/Toast";
+import DeviceStorage from "../config/DeviceStorage";
 import Api from "../constants/Api";
 const Register = (props) => {
   const colors = useContext(themeContext);
@@ -100,6 +101,41 @@ const Register = (props) => {
     }
     return isValid;
   };
+  const SignIn = async () => {
+    var data = {
+      Email: email,
+      Password: password,
+    };
+    var response = await (await request())
+      .post(Api.Login, data)
+      .catch(function (error) {
+        ToastMessage.Short("Error Occured Contact Support");
+      });
+    if (response != undefined) {
+      if (response.data.success == 1) {
+        var info = response.data.userData[0];
+        var userInfo = {
+          UserId: info.userID,
+          Phone: info.phone,
+          City: info.city,
+          CountryId: info.countryId,
+          Email: info.email,
+          FirstName: info.firstName,
+          LastName: info.lastName,
+          StartDate: info.startDate,
+          ProfileImage: info.profileImage,
+        };
+        await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
+        await DeviceStorage.saveKey("token", response.data.token);
+        await DeviceStorage.saveKey("isLoggedIn", "true");
+        props.navigation.replace("HomeStack");
+      } else {
+        ToastMessage.Short(response.data.data);
+      }
+    } else {
+      ToastMessage.Short("Error Occured");
+    }
+  };
 
   const register = async () => {
     var currentDate = new Date();
@@ -120,9 +156,9 @@ const Register = (props) => {
         ToastMessage.Short("Error Occured");
       });
     if (response != undefined) {
-      if (response.data.status == 1) {
+      if (response.data.success == 1) {
         ToastMessage.Short("Registration Succesful");
-        props.navigation.replace("Login");
+        SignIn();
       } else {
         setConfirmPasswordError(response.data.message);
       }
