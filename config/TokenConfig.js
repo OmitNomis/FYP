@@ -1,5 +1,5 @@
 export default TokenConfig = {
-  // client_id: "scr.client",
-  // client_secret: "supersecret",
-  // grant_type: "client_credentials",
+  // client_id: "",
+  // client_secret: "",
+  // grant_type: "",
 };

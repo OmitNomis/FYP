@@ -35,7 +35,7 @@ const Login = (props) => {
     let isValid = true;
     if (email.trim() === "") {
       isValid = false;
-      setEmailError("Username is required");
+      setEmailError("Email is required");
     } else {
       setEmailError("");
     }
@@ -77,7 +77,7 @@ const Login = (props) => {
         await DeviceStorage.saveKey("isLoggedIn", "true");
         props.navigation.replace("HomeStack");
       } else {
-        ToastMessage.Short(response.data.data);
+        setPasswordError(response.data.data);
       }
     } else {
       ToastMessage.Short("Error Occured");
@@ -94,28 +94,6 @@ const Login = (props) => {
     backgroundColor: colors.Background,
   };
 
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert(
-        "Hold on!",
-        "Are you sure you want to quit the Application?",
-        [
-          {
-            text: "Go Back",
-            onPress: () => null,
-            style: "cancel",
-          },
-          { text: "YES", onPress: () => BackHandler.exitApp() },
-        ]
-      );
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-    return () => backHandler.remove();
-  }, []);
   return (
     <KeyboardAvoidingView
       behavior="height"
@@ -240,8 +218,10 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
   },
   logoHolder: {
-    marginVertical: 80,
-    height: 145,
+    marginTop: 40,
+    marginBottom: 60,
+    height: 120,
+    alignSelf: "center",
     width: 190,
   },
   logo: {

@@ -507,13 +507,17 @@ const Book = (props) => {
           </View>
           <KeyboardAvoidingView style={{ flex: 1 }}>
             {postComments.length == 0 ? (
-              <View
-                style={{
+              <ScrollView
+                contentContainerStyle={{
                   alignItems: "center",
                   justifyContent: "center",
-                  flex: 1,
+                  flexGrow: 1,
                   backgroundColor: colors.backgroundColor,
                 }}
+                onContentSizeChange={() =>
+                  scrollView.current.scrollToEnd({ animated: true })
+                }
+                ref={(ref) => (scrollView.current = ref)}
               >
                 <Text
                   style={{
@@ -524,7 +528,7 @@ const Book = (props) => {
                 >
                   No Comments Yet...
                 </Text>
-              </View>
+              </ScrollView>
             ) : (
               <ScrollView
                 nestedScrollEnabled

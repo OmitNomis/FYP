@@ -36,6 +36,9 @@ const EditProfile = (props) => {
   const [myInfo, setMyInfo] = useState();
   const [imageUpdated, setImageUpdated] = useState(false);
   useEffect(async () => {
+    props.navigation.setOptions({
+      title: "Edit Profile",
+    });
     getUserInfo();
   }, []);
 
@@ -168,7 +171,7 @@ const EditProfile = (props) => {
           ProfileImage: imagePath ? imagePath : null,
         };
         await DeviceStorage.saveKey("UserInfo", JSON.stringify(userInfo));
-        props.navigation.replace("HomeStack");
+        props.navigation.replace("Settings");
       }
     } else {
       ToastMessage.Short("Error Occured While Making Post");

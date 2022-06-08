@@ -94,7 +94,9 @@ const AddBook = (props) => {
   const [price, setPrice] = useState("");
   const [tradeWith, setTradeWith] = useState("");
   const [image, setImage] = useState();
-  const [errorMessage, setErrorMessage] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [titleError, setTitleError] = useState(false);
+  const [authorError, setAuthorError] = useState(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -111,6 +113,7 @@ const AddBook = (props) => {
     let isValid = true;
     if (!image) {
       isValid = false;
+      setImageError(true);
     }
     if (title.trim() === "") {
       isValid = false;
@@ -119,6 +122,9 @@ const AddBook = (props) => {
       isValid = false;
     }
     if (price.trim() === "") {
+      isValid = false;
+    }
+    if (location.trim() === "") {
       isValid = false;
     }
     if (priceTypeValue == null) {
@@ -255,43 +261,72 @@ const AddBook = (props) => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <KeyboardAvoidingView behavior="padding" keyboardShouldPersistTaps>
-          <View style={styles.addImageSection}>
-            <View style={{ marginBottom: 20 }}>
-              <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
-                {!image ? (
-                  <Text
-                    style={{
-                      fontFamily: "Regular",
-                      fontSize: 16,
-                      color: colors.LightText,
-                    }}
-                  >
-                    Upload Image
-                  </Text>
-                ) : (
-                  <Image
-                    style={{ height: "100%", width: "100%", borderRadius: 100 }}
-                    source={{ uri: image.uri }}
-                  />
-                )}
-              </TouchableOpacity>
-            </View>
+        <View style={styles.addImageSection}>
+          <View style={{ marginBottom: 20 }}>
+            <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
+              {!image ? (
+                <Text
+                  style={{
+                    fontFamily: "Regular",
+                    fontSize: 16,
+                    color: colors.LightText,
+                  }}
+                >
+                  Upload Image
+                </Text>
+              ) : (
+                <Image
+                  style={{ height: "100%", width: "100%", borderRadius: 100 }}
+                  source={{ uri: image.uri }}
+                />
+              )}
+            </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+        </View>
+        {imageError ? (
+          <View>
+            <Text
+              style={{
+                marginBottom: 10,
+                color: "red",
+                fontFamily: "Regular",
+                alignSelf: "center",
+              }}
+            >
+              Please Select an image
+            </Text>
+          </View>
+        ) : (
+          <></>
+        )}
         <View style={styles.form}>
           <TextBoxOutline
             placeholder="Book Title"
             value={title}
             onChangeText={(text) => setTitle(text)}
           />
+          {titleError ? (
+            <View>
+              <Text
+                style={{
+                  marginBottom: 10,
+                  color: "red",
+                  fontFamily: "Regular",
+                  alignSelf: "center",
+                }}
+              >
+                Please Enter a book title.
+              </Text>
+            </View>
+          ) : (
+            <></>
+          )}
           <TextBoxOutline
             placeholder="Author"
             value={author}
             onChangeText={(text) => setAuthor(text)}
           />
           <MultiSelect
-            // hideTags
             items={genreList}
             uniqueKey="id"
             onSelectedItemsChange={(selected) => setSelectedGenre(selected)}
@@ -479,29 +514,11 @@ const AddBook = (props) => {
           </View>
         </View>
         <View style={{ marginTop: 20 }}>
-          {errorMessage ? (
-            <View>
-              <Text
-                style={{
-                  marginBottom: 10,
-                  color: "red",
-                  fontFamily: "Regular",
-                }}
-              >
-                Please fill up all fields
-              </Text>
-            </View>
-          ) : (
-            <></>
-          )}
           <CustomButton
             title="Post"
             onPress={() => {
               if (validateForm()) {
-                setErrorMessage(false);
                 uploadImage();
-              } else {
-                setErrorMessage(true);
               }
             }}
           />

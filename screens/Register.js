@@ -406,9 +406,10 @@ const styles = StyleSheet.create({
   },
   body: {},
   logoHolder: {
-    height: 145,
+    height: 120,
     width: 190,
-    marginVertical: 50,
+    alignSelf: "center",
+    marginVertical: 40,
   },
   logo: {
     height: "100%",
