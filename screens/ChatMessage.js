@@ -109,7 +109,7 @@ const ChatMessage = (props) => {
         >
           {messages.map((message) => (
             <Message
-              key={message.messageID}
+              key={message.messageID ? message.messageID : message.message}
               time={message.dateTime}
               isLeft={isMyMessage(message.senderID)}
               message={message.message}
