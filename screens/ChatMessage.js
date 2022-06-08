@@ -22,6 +22,7 @@ const ChatMessage = (props) => {
   const firstName = props.route.params.params.firstName;
   const lastName = props.route.params.params.lastName;
   const profileImage = props.route.params.params.profileImage;
+  var myID;
 
   const socket = io(api.BaseUrl);
   const [message, setMessage] = useState("");
@@ -35,10 +36,17 @@ const ChatMessage = (props) => {
 
   useEffect(() => {
     socket.on("chat message", (msg) => {
-      setMessages((messages) => [...messages, msg]);
-      props.route.params.params.refresh(msg);
+      appendMessage(msg);
     });
   }, []);
+  const appendMessage = (msg) => {
+    if (msg.senderID == myID || msg.senderID == userID) {
+      if (msg.receiverID == myID || msg.receiverID == userID) {
+        setMessages((messages) => [...messages, msg]);
+        props.route.params.params.refresh(msg);
+      }
+    }
+  };
   const getMessages = async (id) => {
     var msgs = await RetriveData.GetChat(id, userID);
     setMessages(msgs);
@@ -48,6 +56,7 @@ const ChatMessage = (props) => {
     var response = await RetriveData.GetCustomerInfo();
     if (response != undefined) {
       setMyDetails(response);
+      myID = response.UserId;
       getMessages(response.UserId);
     } else {
       ToastMessage.Short("Error Loading details");
@@ -58,7 +67,7 @@ const ChatMessage = (props) => {
   const submitChatMessage = () => {
     let currentDate = new Date();
 
-    if (message != "") {
+    if (message.trim() != "") {
       socket.emit("chat message", {
         senderID: myDetails.UserId,
         receiverID: userID,
