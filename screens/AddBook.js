@@ -94,9 +94,14 @@ const AddBook = (props) => {
   const [price, setPrice] = useState("");
   const [tradeWith, setTradeWith] = useState("");
   const [image, setImage] = useState();
-  const [imageError, setImageError] = useState(false);
-  const [titleError, setTitleError] = useState(false);
-  const [authorError, setAuthorError] = useState(false);
+  const [imageError, setImageError] = useState("");
+  const [titleError, setTitleError] = useState("");
+  const [authorError, setAuthorError] = useState("");
+  const [priceError, setPriceError] = useState("");
+  const [locationError, setLocationError] = useState("");
+  const [conditionError, setConditionError] = useState("");
+  const [genreError, setGenreError] = useState("");
+  const [tradeWithError, setTradeWithError] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -113,33 +118,67 @@ const AddBook = (props) => {
     let isValid = true;
     if (!image) {
       isValid = false;
-      setImageError(true);
+      setImageError("Please Select an Image");
+    } else {
+      setImageError("");
     }
     if (title.trim() === "") {
       isValid = false;
+      setTitleError("Please add a Book Title");
+    } else {
+      setTitleError("");
     }
     if (author.trim() === "") {
       isValid = false;
+      setAuthorError("Please add an Author Name");
+    } else {
+      setAuthorError("");
     }
-    if (price.trim() === "") {
+    if (price.trim() === "" && priceTypeValue == null) {
       isValid = false;
+      setPriceError("Please enter Price and Price Type");
+    } else if (price.trim() === "") {
+      isValid = false;
+      setPriceError("Please enter Price");
+    } else if (priceTypeValue.trim === null) {
+      isValid = false;
+      setPriceError("Please select Price Type");
+    } else {
+      setPriceError("");
     }
+
     if (location.trim() === "") {
       isValid = false;
+      setLocationError("Please add a location");
+    } else {
+      setLocationError("");
     }
-    if (priceTypeValue == null) {
+    if (conditionValue == null && deliveryValue == null) {
       isValid = false;
-    }
-    if (conditionValue == null) {
+      setConditionError("Please select Condition and Delivery agreement");
+    } else if (deliveryValue == null) {
       isValid = false;
-    }
-    if (deliveryValue == null) {
+      setPriceError("Please select Delivery agreement");
+    } else if (conditionValue == null) {
       isValid = false;
+      setPriceError("Please select Condition");
+    } else {
+      setPriceError("");
     }
     if (trade) {
       if (tradeWith.trim() === "") {
         isValid = false;
+        setTradeWithError("Please enter a book title");
+      } else {
+        setTradeWithError("");
       }
+    }
+
+    if (selectedGenre.length == 0) {
+      isValid = false;
+      setGenreError("Please Select atleast one Genre");
+    } else {
+      setGenreError("");
     }
     return isValid;
   };
@@ -283,21 +322,17 @@ const AddBook = (props) => {
             </TouchableOpacity>
           </View>
         </View>
-        {imageError ? (
-          <View>
-            <Text
-              style={{
-                marginBottom: 10,
-                color: "red",
-                fontFamily: "Regular",
-                alignSelf: "center",
-              }}
-            >
-              Please Select an image
-            </Text>
-          </View>
-        ) : (
-          <></>
+        {imageError.length > 0 && (
+          <Text
+            style={{
+              color: "red",
+              fontFamily: "Regular",
+              fontSize: 14,
+              alignSelf: "center",
+            }}
+          >
+            {imageError}
+          </Text>
         )}
         <View style={styles.form}>
           <TextBoxOutline
@@ -305,27 +340,33 @@ const AddBook = (props) => {
             value={title}
             onChangeText={(text) => setTitle(text)}
           />
-          {titleError ? (
-            <View>
-              <Text
-                style={{
-                  marginBottom: 10,
-                  color: "red",
-                  fontFamily: "Regular",
-                  alignSelf: "center",
-                }}
-              >
-                Please Enter a book title.
-              </Text>
-            </View>
-          ) : (
-            <></>
+          {titleError.length > 0 && (
+            <Text
+              style={{
+                color: "red",
+                fontFamily: "Regular",
+                fontSize: 14,
+              }}
+            >
+              {titleError}
+            </Text>
           )}
           <TextBoxOutline
             placeholder="Author"
             value={author}
             onChangeText={(text) => setAuthor(text)}
           />
+          {authorError.length > 0 && (
+            <Text
+              style={{
+                color: "red",
+                fontFamily: "Regular",
+                fontSize: 14,
+              }}
+            >
+              {authorError}
+            </Text>
+          )}
           <MultiSelect
             items={genreList}
             uniqueKey="id"
@@ -373,6 +414,17 @@ const AddBook = (props) => {
             }}
             textColor={colors.Text}
           />
+          {genreError.length > 0 && (
+            <Text
+              style={{
+                color: "red",
+                fontFamily: "Regular",
+                fontSize: 14,
+              }}
+            >
+              {genreError}
+            </Text>
+          )}
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -414,6 +466,17 @@ const AddBook = (props) => {
               }}
             />
           </View>
+          {priceError.length > 0 && (
+            <Text
+              style={{
+                color: "red",
+                fontFamily: "Regular",
+                fontSize: 14,
+              }}
+            >
+              {priceError}
+            </Text>
+          )}
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -479,11 +542,33 @@ const AddBook = (props) => {
               v
             />
           </View>
+          {conditionError.length > 0 && (
+            <Text
+              style={{
+                color: "red",
+                fontFamily: "Regular",
+                fontSize: 14,
+              }}
+            >
+              {conditionError}
+            </Text>
+          )}
           <TextBoxOutline
             placeholder="City (eg:  Kathmandu, Butwal)"
             value={location}
             onChangeText={(text) => setLocation(text)}
           />
+          {locationError.length > 0 && (
+            <Text
+              style={{
+                color: "red",
+                fontFamily: "Regular",
+                fontSize: 14,
+              }}
+            >
+              {locationError}
+            </Text>
+          )}
           <View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Switch
@@ -510,6 +595,17 @@ const AddBook = (props) => {
                 value={tradeWith}
                 onChangeText={(text) => setTradeWith(text)}
               />
+            )}
+            {tradeWithError.length > 0 && (
+              <Text
+                style={{
+                  color: "red",
+                  fontFamily: "Regular",
+                  fontSize: 14,
+                }}
+              >
+                {tradeWithError}
+              </Text>
             )}
           </View>
         </View>
