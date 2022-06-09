@@ -28,6 +28,8 @@ import DeviceStorage from "../config/DeviceStorage";
 import GenreScreen from "../screens/GenreScreen";
 import SearchScreen from "../screens/SearchScreen";
 import AllGenre from "../screens/AllGenre";
+import ProfileOthers from "../screens/ProfileOthers";
+import ListingsOthers from "../screens/ListingsOthers";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -128,6 +130,11 @@ function ScreenStack(props) {
       <Stack.Screen
         name="MyListings"
         component={MyListings}
+        options={headerShown}
+      />
+      <Stack.Screen
+        name="ListingsOthers"
+        component={ListingsOthers}
         options={headerShown}
       />
       <Stack.Screen
@@ -235,6 +242,11 @@ function SignInStack(props) {
         <Stack.Screen
           name="ChatMessage"
           component={ChatMessage}
+          options={noHeader}
+        />
+        <Stack.Screen
+          name="ProfileOthers"
+          component={ProfileOthers}
           options={noHeader}
         />
       </>

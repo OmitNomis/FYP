@@ -191,7 +191,7 @@ const Book = (props) => {
     if (response != undefined) {
       if (response.data.success == 1) {
         ToastMessage.Short("Successfully deleted");
-        props.navigation.replace("HomeStack");
+        props.navigation.replace("HomeStack", { screen: "Profile" });
       } else {
         ToastMessage.Short(response.data.Message);
       }
@@ -385,12 +385,19 @@ const Book = (props) => {
         </View>
         <View style={styles.customerDetailsContainer}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View style={styles.profilePicContainer}>
+            <TouchableOpacity
+              style={styles.profilePicContainer}
+              onPress={() =>
+                props.navigation.navigate("ProfileOthers", {
+                  params: { bookDetails },
+                })
+              }
+            >
               <Image
                 style={{ height: "100%", width: "100%", borderRadius: 30 }}
                 source={{ uri: api.BaseUrl + userInfo.profileImage }}
               />
-            </View>
+            </TouchableOpacity>
             <View style={styles.BookcustomerDetails}>
               <View>
                 <Text style={styles.customerName}>
@@ -597,49 +604,70 @@ const Book = (props) => {
         </View>
       </ModalPopUp>
       {myListing == false ? (
-        <View style={styles.footer}>
-          {bookmark == true ? (
+        bookDetails.sold == 1 ? (
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.footerButton} disabled>
+              <Icon
+                name="checkmark-circle"
+                size={20}
+                style={styles.iconStyles}
+              />
+              <Text style={styles.footerText}>Book Sold</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.footer}>
+            {bookmark == true ? (
+              <TouchableOpacity
+                style={styles.footerButton}
+                onPress={bookmarkHandler}
+              >
+                <Icon
+                  name="heart"
+                  style={{ color: colors.Primary }}
+                  size={20}
+                />
+                <Text style={styles.footerText}>Bookmark</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.footerButton}
+                onPress={bookmarkHandler}
+              >
+                <Icon
+                  name="heart-outline"
+                  style={styles.iconStyles}
+                  size={20}
+                />
+                <Text style={styles.footerText}>Bookmark</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity style={styles.footerButton} onPress={dialCall}>
+              <Icon name="call-outline" style={styles.iconStyles} size={20} />
+              <Text style={styles.footerText}>Call</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={styles.footerButton}
-              onPress={bookmarkHandler}
+              onPress={() =>
+                props.navigation.navigate("ChatMessage", {
+                  params: {
+                    userID: userInfo.userID,
+                    firstName: userInfo.firstName,
+                    lastName: userInfo.lastName,
+                    profileImage: userInfo.profileImage,
+                  },
+                })
+              }
             >
-              <Icon name="heart" style={{ color: colors.Primary }} size={20} />
-              <Text style={styles.footerText}>Bookmark</Text>
+              <Icon
+                name="chatbox-ellipses-outline"
+                style={styles.iconStyles}
+                size={20}
+              />
+              <Text style={styles.footerText}>Chat now</Text>
             </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={styles.footerButton}
-              onPress={bookmarkHandler}
-            >
-              <Icon name="heart-outline" style={styles.iconStyles} size={20} />
-              <Text style={styles.footerText}>Bookmark</Text>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity style={styles.footerButton} onPress={dialCall}>
-            <Icon name="call-outline" style={styles.iconStyles} size={20} />
-            <Text style={styles.footerText}>Call</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.footerButton}
-            onPress={() =>
-              props.navigation.navigate("ChatMessage", {
-                params: {
-                  userID: userInfo.userID,
-                  firstName: userInfo.firstName,
-                  lastName: userInfo.lastName,
-                  profileImage: userInfo.profileImage,
-                },
-              })
-            }
-          >
-            <Icon
-              name="chatbox-ellipses-outline"
-              style={styles.iconStyles}
-              size={20}
-            />
-            <Text style={styles.footerText}>Chat now</Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        )
       ) : (
         <View style={styles.footer}>
           <TouchableOpacity

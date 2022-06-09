@@ -7,6 +7,7 @@ import {
   Image,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import TextBox from "../components/TextBox";
 import request from "../config/RequestManager";
@@ -70,6 +71,8 @@ const Register = (props) => {
     if (phoneNumber.trim() === "") {
       isValid = false;
       setPhoneNumberError("PhoneNumber is required");
+    } else if (phoneNumber.length < 10) {
+      setPhoneNumberError("Phone number must be 10 digits long");
     } else {
       setPhoneNumberError("");
     }

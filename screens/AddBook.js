@@ -286,7 +286,10 @@ const AddBook = (props) => {
   return (
     <KeyboardAvoidingView
       behavior="height"
-      style={{ flex: 1, backgroundColor: colors.Background }}
+      style={{
+        flex: 1,
+        backgroundColor: colors.Background,
+      }}
     >
       <ScrollView
         nestedScrollEnabled
@@ -300,6 +303,7 @@ const AddBook = (props) => {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
+        {/* <KeyboardAvoidingView> */}
         <View style={styles.addImageSection}>
           <View style={{ marginBottom: 20 }}>
             <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
@@ -322,6 +326,7 @@ const AddBook = (props) => {
             </TouchableOpacity>
           </View>
         </View>
+        {/* </KeyboardAvoidingView> */}
         {imageError.length > 0 && (
           <Text
             style={{
