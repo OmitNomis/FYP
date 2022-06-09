@@ -557,6 +557,8 @@ const Book = (props) => {
                       userId={comment.commenterID}
                       comment={comment.comment}
                       time={comment.commentTime}
+                      commentID={comment.commentID}
+                      refreshComments={getPostComments}
                     />
                   );
                 })}
