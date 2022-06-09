@@ -10,54 +10,45 @@ import {
 } from "react-native";
 // import colors from "../assets/theme/colors";
 import CustomButton from "../components/CustomButton";
-import RetriveData from "../service/RetriveData";
 import TextBox from "../components/TextBox";
 import api from "../constants/Api";
 import ToastMessage from "../components/Toast";
 import request from "../config/RequestManager";
 import themeContext from "../assets/theme/colorsContext";
-const ChangePassword = (props) => {
+const ResetPassword = (props) => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [oldPasswordError, setOldPasswordError] = useState("");
-  const [myDetails, setMyDetails] = useState([]);
   const colors = useContext(themeContext);
+  const email = props.route.params.params.email;
 
   useEffect(() => {
     props.navigation.setOptions({
-      title: "Change Password",
+      title: "Reset Password",
     });
-    getMyDetails();
   }, []);
-  const getMyDetails = async () => {
-    var response = await RetriveData.GetCustomerInfo();
-    if (response != undefined) {
-      setMyDetails(response);
-    } else {
-      ToastMessage.Short("Error Loading details");
-    }
-  };
   const changePassword = async () => {
     var data = {
-      Email: myDetails.Email,
+      Email: email,
       OldPassword: oldPassword,
       NewPassword: password,
     };
 
     var response = await (await request())
-      .post(api.ChangePassword, data)
+      .post(api.ResetChangePassword, data)
       .catch(function (error) {
         ToastMessage.Short("Error Occured Contact Support");
       });
     if (response != undefined) {
       if (response.data.success == 0) {
-        ToastMessage.Short(response.data.message);
+        // ToastMessage.Short(response.data.message);
+        setConfirmPasswordError(response.data.message);
       } else {
         ToastMessage.Short("Password Successfully Changed");
-        props.navigation.replace("HomeStack");
+        props.navigation.replace("Login");
       }
     }
   };
@@ -125,15 +116,15 @@ const ChangePassword = (props) => {
           <View style={styles.body}>
             <View style={styles.bodyTextContainer}>
               <Text style={styles.bodyText}>
-                To change your Password, please enter your old password followed
-                by the new password.
+                To reset your Password, please enter the temporary password sent
+                to you in your email followed by the new password.
               </Text>
             </View>
             <View style={styles.input}>
               <View>
                 <TextBox
                   icon="lock-closed"
-                  placeholder="Old Password"
+                  placeholder="Temporary Password"
                   protected={true}
                   value={oldPassword}
                   onChangeText={(text) => setOldPassword(text)}
@@ -210,4 +201,4 @@ const ChangePassword = (props) => {
     </View>
   );
 };
-export default ChangePassword;
+export default ResetPassword;

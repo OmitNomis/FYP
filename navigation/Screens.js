@@ -30,6 +30,7 @@ import SearchScreen from "../screens/SearchScreen";
 import AllGenre from "../screens/AllGenre";
 import ProfileOthers from "../screens/ProfileOthers";
 import ListingsOthers from "../screens/ListingsOthers";
+import ResetPassword from "../screens/ResetPassword";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -197,6 +198,11 @@ function SignInStack(props) {
           name="ForgotPassword"
           component={ForgotPassword}
           options={noHeader}
+        />
+        <Stack.Screen
+          name="ResetPassword"
+          component={ResetPassword}
+          options={headerShown}
         />
         <Stack.Screen
           name="ConfirmationMail"

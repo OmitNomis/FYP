@@ -31,6 +31,8 @@ const GetPostComments = BaseUrl + "api/book/getPostComments";
 const DeletePostComment = BaseUrl + "api/book/deleteComment";
 const GetPostByGenre = BaseUrl + "api/book/getPostByGenre";
 const SendFeedback = BaseUrl + "api/feedback";
+const ResetPassword = BaseUrl + "api/reset";
+const ResetChangePassword = BaseUrl + "api/resetPassword";
 
 export default {
   Login,
@@ -60,4 +62,6 @@ export default {
   GetPostComments,
   GetPostsByUser,
   SendFeedback,
+  ResetPassword,
+  ResetChangePassword,
 };

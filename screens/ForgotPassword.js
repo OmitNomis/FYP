@@ -13,9 +13,14 @@ import Icon from "react-native-vector-icons/Ionicons";
 import themeContext from "../assets/theme/colorsContext";
 import CustomButton from "../components/CustomButton";
 import TextBox from "../components/TextBox";
+import Api from "../constants/Api";
+import request from "../config/RequestManager";
+import ToastMessage from "../components/Toast";
+
 const ForgotPassword = (props) => {
   const colors = useContext(themeContext);
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const styles = StyleSheet.create({
     container: {
       paddingTop: StatusBar.currentHeight,
@@ -52,6 +57,41 @@ const ForgotPassword = (props) => {
       marginTop: 30,
     },
   });
+
+  const validateForm = () => {
+    var isValid = true;
+    if (email.trim() === "") {
+      isValid = false;
+      setEmailError("Email address is required");
+    } else {
+      setEmailError("");
+    }
+
+    return isValid;
+  };
+
+  const resetPassword = async () => {
+    var data = {
+      Email: email,
+    };
+    var response = await (await request())
+      .post(Api.ResetPassword, data)
+      .catch(function (error) {
+        console.log(error);
+        ToastMessage.Short("Error Occured, Try Again");
+      });
+
+    if (response != undefined) {
+      if (response.data.success == 1) {
+        ToastMessage.Short("Password Successfully Reset");
+        props.navigation.replace("ResetPassword", { params: { email } });
+      } else {
+        setEmailError(response.data.data);
+      }
+    } else {
+      ToastMessage.Short("Error Occured");
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
@@ -86,11 +126,27 @@ const ForgotPassword = (props) => {
                 value={email}
                 onChangeText={(text) => setEmail(text)}
               />
+              {emailError.length > 0 && (
+                <Text
+                  style={{
+                    color: "red",
+                    fontFamily: "Regular",
+                    fontSize: 14,
+                    marginLeft: 30,
+                  }}
+                >
+                  {emailError}
+                </Text>
+              )}
             </View>
             <View style={styles.button}>
               <CustomButton
                 title="Send Recovery Email"
-                // onPress={() => props.navigation.navigate("ConfirmationMail")}
+                onPress={() => {
+                  if (validateForm()) {
+                    resetPassword();
+                  }
+                }}
               />
             </View>
           </View>
