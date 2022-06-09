@@ -2,9 +2,10 @@ import { StyleSheet, Text, View, ScrollView, TextInput } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import CustomButton from "../components/CustomButton";
 import themeContext from "../assets/theme/colorsContext";
-import DeviceStorage from "../config/DeviceStorage";
 import RetriveData from "../service/RetriveData";
-// import colors from "../assets/theme/colors";
+import Api from "../constants/Api";
+import ToastMessage from "../components/Toast";
+import request from "../config/RequestManager";
 
 const About = (props) => {
   const colors = useContext(themeContext);
@@ -17,7 +18,6 @@ const About = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [myDetails, setMyDetails] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getMyDetails = async () => {
@@ -25,6 +25,30 @@ const About = (props) => {
     setName(response.FirstName + " " + response.LastName);
     setEmail(response.Email);
     setLoading(false);
+  };
+
+  const sendFeedback = async () => {
+    data = {
+      UserName: name,
+      UserEmail: email,
+      Feedback: message,
+    };
+    var response = await (await request())
+      .post(Api.SendFeedback, data)
+      .catch(function (error) {
+        ToastMessage.Short("Error Occured, Try Again");
+      });
+
+    if (response != undefined) {
+      if (response.data.success == 1) {
+        ToastMessage.Short("Feedback Successfully Sent");
+        props.refreshComments();
+      } else {
+        ToastMessage.Short(response.data.Message);
+      }
+    } else {
+      ToastMessage.Short("Error Occured");
+    }
   };
 
   const styles = StyleSheet.create({
@@ -110,7 +134,7 @@ const About = (props) => {
             />
           </View>
           <View style={{ marginTop: 30, paddingHorizontal: 30 }}>
-            <CustomButton title="Send" />
+            <CustomButton title="Send" onPress={() => sendFeedback()} />
           </View>
         </ScrollView>
       </View>

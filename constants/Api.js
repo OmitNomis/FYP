@@ -30,6 +30,7 @@ const AddComment = BaseUrl + "api/book/addComment";
 const GetPostComments = BaseUrl + "api/book/getPostComments";
 const DeletePostComment = BaseUrl + "api/book/deleteComment";
 const GetPostByGenre = BaseUrl + "api/book/getPostByGenre";
+const SendFeedback = BaseUrl + "api/feedback";
 
 export default {
   Login,
@@ -58,4 +59,5 @@ export default {
   GetChatList,
   GetPostComments,
   GetPostsByUser,
+  SendFeedback,
 };
