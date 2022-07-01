@@ -16,7 +16,7 @@ import RetriveData from "../service/RetriveData";
 const Chat = (props) => {
   const colors = useContext(themeContext);
   const [myDetails, setMyDetails] = useState();
-  const [chatList, setChatList] = useState();
+  const [chatList, setChatList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -33,6 +33,7 @@ const Chat = (props) => {
     if (response != undefined) {
       setMyDetails(response);
       getChatList(response);
+      setLoading(false);
     } else {
       ToastMessage.Short("Error Loading details");
     }
@@ -71,7 +72,20 @@ const Chat = (props) => {
         }
       });
     setChatList(newArray);
-    setLoading(false);
+  };
+  const renderChatList = () => {
+    return chatList.map((item) => (
+      <PersonChat
+        key={item.messageID}
+        lastMessage={item.message}
+        userId={
+          myDetails.UserId === item.senderID ? item.receiverID : item.senderID
+        }
+        time={item.dateTime}
+        navigation={props.navigation}
+        refresh={refresh}
+      />
+    ));
   };
 
   return loading == false ? (
@@ -89,20 +103,29 @@ const Chat = (props) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {chatList.map((item) => (
-          <PersonChat
-            key={item.messageID}
-            lastMessage={item.message}
-            userId={
-              myDetails.UserId === item.senderID
-                ? item.receiverID
-                : item.senderID
-            }
-            time={item.dateTime}
-            navigation={props.navigation}
-            refresh={refresh}
-          />
-        ))}
+        {chatList.length == 0 ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: colors.Background,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "Regular",
+                fontSize: 16,
+                marginTop: 20,
+                color: colors.Text,
+              }}
+            >
+              No Chat History Found...
+            </Text>
+          </View>
+        ) : (
+          renderChatList()
+        )}
       </ScrollView>
     </View>
   ) : (

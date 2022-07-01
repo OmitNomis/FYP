@@ -62,6 +62,8 @@ const ItemWide = (props) => {
       marginLeft: 10,
       marginBottom: 10,
       color: colors.Text,
+      flexWrap: "wrap",
+      width: "60%",
     },
     info: {},
     bottomTextHolder: {
@@ -108,7 +110,9 @@ const ItemWide = (props) => {
                 size={22}
                 style={{ color: colors.Text }}
               />
-              <Text style={styles.headingText}>{bookDetails.title}</Text>
+              <Text numberOfLines={3} style={styles.headingText}>
+                {bookDetails.title}
+              </Text>
             </View>
             <View style={styles.info}>
               <View style={styles.bottomTextHolder}>

@@ -25,8 +25,8 @@ import themeContext from "../assets/theme/colorsContext";
 // import colors from "../assets/theme/colors";
 
 const Login = (props) => {
-  const [email, setEmail] = useState("simon98190@gmail.com");
-  const [password, setPassword] = useState("hehe");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);

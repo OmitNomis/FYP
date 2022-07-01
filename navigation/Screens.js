@@ -9,7 +9,6 @@ import ConfirmationMail from "../screens/ConfirmationMail";
 import Home from "../screens/Home";
 import Chat from "../screens/Chat";
 import Profile from "../screens/Profile";
-import colors from "../assets/theme/colors";
 import Settings from "../screens/Settings";
 import ChangePassword from "../screens/ChangePassword";
 import About from "../screens/About";
